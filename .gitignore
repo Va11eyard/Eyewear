@@ -1,0 +1,10 @@
+node_modules/
+.next/
+coverage/
+coverage.out
+*.exe
+.env
+.env.local
+dist/
+backend/coverage.out
+web/coverage/

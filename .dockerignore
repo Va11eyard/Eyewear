@@ -1,0 +1,10 @@
+.git
+**/.next
+**/node_modules
+**/coverage
+**/*.exe
+backend/coverage.out
+web/coverage
+AI-Powered Eyewear Platform MVP
+**/.env
+**/.env.local

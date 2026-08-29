@@ -1,0 +1,9 @@
+.git
+.gitignore
+*.exe
+*.out
+coverage.out
+.gremlins.yaml
+**/*_test.go
+.dockerignore
+Dockerfile

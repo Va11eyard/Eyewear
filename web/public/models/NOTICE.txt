@@ -1,0 +1,5 @@
+sunglasses-khronos.glb
+© 2024 Darmstadt Graphics Group GmbH
+Modeled from a physical pair of sunglasses for Khronos 3D Commerce.
+License: Creative Commons Attribution 4.0 International
+https://github.com/KhronosGroup/glTF-Sample-Assets/tree/main/Models/SunglassesKhronos

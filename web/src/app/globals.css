@@ -1,0 +1,37 @@
+@import "tailwindcss";
+
+@theme {
+  --font-display: var(--font-fraunces), ui-serif, Georgia, serif;
+  --font-sans: var(--font-outfit), ui-sans-serif, system-ui, sans-serif;
+  --color-paper: oklch(0.965 0.018 88);
+  --color-ink: oklch(0.2 0.024 42);
+  --color-mute: oklch(0.48 0.03 50);
+  --color-line: oklch(0.86 0.02 80);
+  --color-blood: oklch(0.44 0.14 28);
+  --color-blood-fg: oklch(0.97 0.01 88);
+  --color-moss: oklch(0.46 0.08 150);
+  --color-gold: oklch(0.74 0.11 78);
+  --color-night: oklch(0.14 0.02 40);
+}
+
+html,
+body {
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-blood);
+  outline-offset: 3px;
+}

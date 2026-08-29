@@ -1,0 +1,17 @@
+services:
+  api:
+    build:
+      context: ./backend
+    image: frame-api:local
+    ports:
+      - "9000:9000"
+    environment:
+      ADDR: ":9000"
+      ALLOWED_ORIGINS: ${ALLOWED_ORIGINS:-http://localhost:3200}
+    read_only: true
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    tmpfs:
+      - /tmp
