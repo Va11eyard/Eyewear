@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { getOptics, postFit, type Head, type Match, type Shop } from "@/lib/api";
 import { faceReady, measureLocked, nextLiveStatus, studioNote } from "@/lib/capture-readiness";
+import { FramePicker } from "@/components/frame-picker";
 import { serializeLandmarks, type Point } from "@/lib/landmarks";
 import { TryOnEngine } from "@/lib/try-on-engine";
 import { KZ_CITIES, headPacket, sizeCode, whatsappHref } from "@/lib/visit-packet";
@@ -271,42 +272,51 @@ function CaptureShell({
   shops: Shop[];
 }) {
   return (
-    <div className="mx-auto flex min-h-[calc(100dvh-4.5rem)] max-w-3xl flex-col items-center gap-8 px-6 py-10">
-      <section className="relative aspect-[3/4] w-full max-w-[28rem] overflow-hidden border border-night bg-night">
-        <video
-          ref={videoRef}
-          className="h-full w-full object-cover"
-          playsInline
-          muted
-          autoPlay
-          aria-label="Живая камера для примерки оправы"
-        />
-        <canvas
-          ref={canvasRef}
-          className="pointer-events-none absolute inset-0 z-[1] h-full w-full"
-          aria-hidden="true"
-        />
-        <div
-          className="pointer-events-none absolute inset-[12%] z-[2] rounded-[40%] border border-paper/35"
-          aria-hidden="true"
-        />
-        <p className="absolute inset-x-4 bottom-4 z-10 text-center text-sm text-paper" role="status">
-          {liveNote}
-        </p>
-      </section>
-      <aside className="flex w-full max-w-lg flex-col items-stretch gap-6">
-        <h1 className="text-center font-display text-4xl leading-none tracking-tight">Живая примерка</h1>
-        <p className="text-center text-sm leading-relaxed text-mute">
-          3D-оправа со скана настоящей пары (Khronos, CC BY) Размер считается по IPD; цвет можно сменить
-        </p>
+    <div className="mx-auto grid max-w-[1280px] gap-x-12 gap-y-10 px-6 py-8 md:px-10 lg:grid-cols-[minmax(0,1fr)_400px]">
+      <div className="lg:sticky lg:top-24 lg:self-start">
+        <section className="relative h-[54dvh] w-full overflow-hidden border border-night bg-night lg:h-[calc(100dvh-19rem)]">
+          <video
+            ref={videoRef}
+            className="h-full w-full object-cover"
+            playsInline
+            muted
+            autoPlay
+            aria-label="Живая камера для примерки оправы"
+          />
+          <canvas
+            ref={canvasRef}
+            className="pointer-events-none absolute inset-0 z-[1] h-full w-full"
+            aria-hidden="true"
+          />
+          <p className="absolute inset-x-4 bottom-4 z-10 text-center text-sm text-paper" role="status">
+            {liveNote}
+          </p>
+        </section>
         <button
           type="button"
           onClick={onCapture}
           disabled={measureDisabled}
-          className="min-h-12 bg-ink px-8 text-[12.5px] font-medium uppercase tracking-[0.11em] text-paper disabled:opacity-50"
+          className="mt-4 min-h-12 w-full bg-ink px-8 text-[12.5px] font-medium uppercase tracking-[0.11em] text-paper transition-colors hover:bg-oxblood disabled:opacity-40"
         >
           Снять мерки и подобрать оправы
         </button>
+        <FramePicker
+          matches={matches}
+          picked={picked}
+          onPick={onPick}
+          colors={colors}
+          color={color}
+          onTint={onTint}
+        />
+      </div>
+      <aside className="flex flex-col gap-6">
+        <div>
+          <h1 className="font-display text-[30px] leading-tight">Живая примерка</h1>
+          <p className="mt-2 text-[13px] leading-relaxed text-mute">
+            Оправа стоит на кадре с вашей камеры и масштабируется по межзрачковому. Список слева
+            переключает модели сразу, без прокрутки
+          </p>
+        </div>
         {head ? <HeadCard head={head} size={size} /> : null}
         {packet ? (
           <VisitCard
@@ -316,8 +326,6 @@ function CaptureShell({
             onShare={() => void navigator.share?.({ text: packet })}
           />
         ) : null}
-        {matches.length > 0 ? <MatchList matches={matches} picked={picked} onPick={onPick} /> : null}
-        <TintPicker colors={colors} value={color} onPick={onTint} />
         <CityField geo={geo} cityId={cityId} onCity={onCity} />
         <ShopList shops={shops} packet={packet} />
       </aside>
@@ -414,37 +422,6 @@ function CityField({
   );
 }
 
-function TintPicker({
-  colors,
-  value,
-  onPick,
-}: {
-  colors: string[];
-  value: string;
-  onPick: (id: string) => void;
-}) {
-  return (
-    <div>
-      <p className="mb-2 text-sm text-mute">Цвет оправы</p>
-      <div className="flex flex-wrap gap-2" role="group" aria-label="Цвет оправы">
-        {colors.map((id) => (
-          <button
-            key={id}
-            type="button"
-            onClick={() => onPick(id)}
-            className={`h-10 min-w-10 rounded-full border px-3 text-xs ${
-              value === id ? "border-ink ring-2 ring-ink/30" : "border-line"
-            }`}
-            style={{ background: tintCss(id) }}
-            aria-pressed={value === id}
-            aria-label={id}
-          />
-        ))}
-      </div>
-    </div>
-  );
-}
-
 function shapeLabel(hint: string): string {
   const map: Record<string, string> = {
     round: "круглое",
@@ -458,54 +435,6 @@ function shapeLabel(hint: string): string {
   return map[hint] ?? hint;
 }
 
-function tintCss(id: string): string {
-  const map: Record<string, string> = {
-    black: "#161310",
-    gold: "#c9a66b",
-    silver: "#d0cbc3",
-    tortoise: "#7a4a28",
-    horn: "#4a3428",
-    burgundy: "#6b1c28",
-    grey: "#6e6b67",
-  };
-  return map[id] ?? "#161310";
-}
-
-function MatchList({
-  matches,
-  picked,
-  onPick,
-}: {
-  matches: Match[];
-  picked: number;
-  onPick: (i: number) => void;
-}) {
-  return (
-    <ul className="space-y-2">
-      {matches.map((m, i) => (
-        <li key={m.frame.sku}>
-          <button
-            type="button"
-            onClick={() => onPick(i)}
-            className={`flex w-full min-h-12 items-center justify-between rounded-2xl border px-4 py-3 text-left ${
-              i === picked ? "border-ink bg-ink text-paper" : "border-line"
-            }`}
-          >
-            <span>
-              <span className="block text-sm font-medium">
-                {m.frame.brand} {m.frame.name}
-              </span>
-              <span className="text-xs opacity-70">
-                Типоразмер {m.frame.lensWidthMm}-{m.frame.bridgeMm}-{m.frame.templeMm}
-              </span>
-            </span>
-            <span className="text-sm tabular-nums">{Math.round(m.score)}%</span>
-          </button>
-        </li>
-      ))}
-    </ul>
-  );
-}
 
 function ShopList({ shops, packet }: { shops: Shop[]; packet: string }) {
   if (shops.length === 0) {
