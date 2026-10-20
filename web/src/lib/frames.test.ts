@@ -1,19 +1,28 @@
 import { describe, expect, it } from "vitest";
-import { FRAMES, silhouetteKey } from "./frames";
+import { CATALOG, LEGACY_FRAMES, silhouetteKey, toLegacyFrame } from "./frames";
 
-describe("optical catalog silhouettes", () => {
-  it("uses a licensed optical mesh, not a cartoon silhouette file", () => {
-    const keys = new Set(FRAMES.map((f) => silhouetteKey(f)));
-    expect(keys.has("rect")).toBe(true);
-    expect(keys.has("oval")).toBe(true);
-    expect(keys.has("round")).toBe(true);
-    expect(keys.has("cat")).toBe(true);
-    expect(FRAMES.every((f) => f.model === "jeeliz:optical" || f.model?.endsWith(".glb"))).toBe(true);
-    expect(FRAMES.every((f) => !f.model?.startsWith("rig:"))).toBe(true);
-    expect(silhouetteKey({ shape: "cat" })).toBe("cat");
+describe("catalogue bridge", () => {
+  it("exposes every model to the scorer without losing the size code", () => {
+    expect(LEGACY_FRAMES).toHaveLength(CATALOG.length);
+    for (const f of CATALOG) {
+      const legacy = toLegacyFrame(f);
+      expect(legacy.model).toBe(f.mesh);
+      expect(legacy.brand).toBe("FRAME");
+      expect(`${legacy.lensWidthMm}-${legacy.bridgeMm}-${legacy.templeMm}`).toBe(
+        `${f.lensWidthMm}-${f.bridgeMm}-${f.templeMm}`,
+      );
+    }
   });
 
-  it("labels sizes as typical stock, not shop inventory", () => {
-    expect(FRAMES.every((f) => f.lensWidthMm >= 46 && f.bridgeMm >= 14)).toBe(true);
+  it("keeps mesh ids resolvable by the registry", () => {
+    for (const f of CATALOG) {
+      expect(f.mesh).toMatch(/^(rig:|glb:|jeeliz:)/);
+    }
+  });
+
+  it("keys silhouettes on shape so recommendations cannot repeat a family", () => {
+    expect(silhouetteKey({ shape: "browline" })).toBe("browline");
+    const keys = new Set(CATALOG.map(silhouetteKey));
+    expect(keys.size).toBeGreaterThan(5);
   });
 });

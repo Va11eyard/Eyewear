@@ -1,4 +1,4 @@
-import { FRAMES } from "@/lib/frames";
+import { LEGACY_FRAMES } from "@/lib/frames";
 import { decodeImage, measure, rank, validateImage, type Head, type Landmark, type Match } from "@/lib/fit-engine";
 import { nearbyOptics, type Shop } from "@/lib/optics-local";
 
@@ -38,7 +38,7 @@ export async function postFit(imageBase64: string, landmarks: unknown): Promise<
   const img = decodeImage(imageBase64);
   validateImage(img);
   const head = measure(asLandmarks(landmarks));
-  return { head, matches: rank(head, FRAMES) };
+  return { head, matches: rank(head, LEGACY_FRAMES) };
 }
 
 export async function getOptics(lat: number, lng: number): Promise<Shop[]> {

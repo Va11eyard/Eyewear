@@ -1,43 +1,43 @@
-import type { Frame } from "@/lib/fit-engine";
+import raw from "../../public/data/frames.json";
+import { loadFrames, type Frame } from "@/lib/frame-catalog";
 
-export const JEELIZ_OPTICAL = "jeeliz:optical";
-const atelierColors = ["black", "gold", "tortoise", "burgundy", "silver", "horn"];
+export type { Frame };
+export { loadFrames };
 
-function optical(
-  sku: string,
-  name: string,
-  shape: string,
-  material: string,
-  color: string,
-  lensWidthMm: number,
-  bridgeMm: number,
-  templeMm: number,
-): Frame {
+export const CATALOG: Frame[] = loadFrames(raw);
+
+/** fit-engine still scores the wire shape the Go API returns. */
+export type LegacyFrame = {
+  sku: string;
+  name: string;
+  brand: string;
+  shape: string;
+  material: string;
+  color: string;
+  lensWidthMm: number;
+  bridgeMm: number;
+  templeMm: number;
+  model?: string;
+  colors?: string[];
+};
+
+export function toLegacyFrame(f: Frame): LegacyFrame {
   return {
-    sku,
-    name,
+    sku: f.sku,
+    name: f.name,
     brand: "FRAME",
-    shape,
-    material,
-    color,
-    lensWidthMm,
-    bridgeMm,
-    templeMm,
-    model: JEELIZ_OPTICAL,
-    colors: atelierColors,
+    shape: f.shape,
+    material: f.material,
+    color: f.color,
+    lensWidthMm: f.lensWidthMm,
+    bridgeMm: f.bridgeMm,
+    templeMm: f.templeMm,
+    model: f.mesh,
+    colors: f.colors,
   };
 }
 
-export const FRAMES: Frame[] = [
-  optical("FR-RECT-50", "Прямоугольник 50", "rect", "acetate", "black", 50, 22, 150),
-  optical("FR-OVAL-58", "Овал 58", "oval", "metal", "gold", 58, 14, 135),
-  optical("FR-RECT-54", "Прямоугольник 54", "rect", "combo", "grey", 54, 17, 138),
-  optical("FR-OVAL-54", "Панто 54", "oval", "acetate", "tortoise", 54, 20, 145),
-  optical("FR-ROUND-47", "Круг 47", "round", "acetate", "horn", 47, 22, 145),
-  optical("FR-ROUND-46", "Панто-круг 46", "round", "acetate", "black", 46, 24, 145),
-  optical("FR-RECT-51", "Тонкий прямоугольник 51", "rect", "metal", "silver", 51, 17, 135),
-  optical("FR-CAT-52", "Кошка 52", "cat", "acetate", "burgundy", 52, 17, 140),
-];
+export const LEGACY_FRAMES: LegacyFrame[] = CATALOG.map(toLegacyFrame);
 
 export function silhouetteKey(frame: { shape: string; model?: string }): string {
   return frame.shape;

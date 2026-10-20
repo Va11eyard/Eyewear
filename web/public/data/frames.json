@@ -1,0 +1,1166 @@
+{
+  "version": 1,
+  "generated": "atelier geometry",
+  "frames": [
+    {
+      "sku": "FR-ROUND-43-HORN",
+      "name": "Круг 43",
+      "shape": "round",
+      "material": "acetate",
+      "color": "horn",
+      "colorRu": "Рог, тёмно-коричневый",
+      "lensWidthMm": 43,
+      "bridgeMm": 22,
+      "templeMm": 145,
+      "weightG": 21,
+      "priceTenge": 54000,
+      "mesh": "rig:round",
+      "colors": [
+        "horn",
+        "black",
+        "gold",
+        "silver"
+      ],
+      "anchor": {
+        "pupilY": 0,
+        "frontZ": 0,
+        "hingeX": 1
+      }
+    },
+    {
+      "sku": "FR-ROUND-43-BLACK",
+      "name": "Круг 43",
+      "shape": "round",
+      "material": "metal",
+      "color": "black",
+      "colorRu": "Чёрный, графит",
+      "lensWidthMm": 43,
+      "bridgeMm": 22,
+      "templeMm": 145,
+      "weightG": 15,
+      "priceTenge": 54000,
+      "mesh": "rig:round",
+      "colors": [
+        "black",
+        "horn",
+        "gold",
+        "silver"
+      ],
+      "anchor": {
+        "pupilY": 0,
+        "frontZ": 0,
+        "hingeX": 1
+      }
+    },
+    {
+      "sku": "FR-ROUND-45-BLACK",
+      "name": "Круг 45",
+      "shape": "round",
+      "material": "metal",
+      "color": "black",
+      "colorRu": "Чёрный, графит",
+      "lensWidthMm": 45,
+      "bridgeMm": 22,
+      "templeMm": 145,
+      "weightG": 15,
+      "priceTenge": 55800,
+      "mesh": "rig:round",
+      "colors": [
+        "black",
+        "horn",
+        "gold",
+        "silver"
+      ],
+      "anchor": {
+        "pupilY": 0,
+        "frontZ": 0,
+        "hingeX": 1
+      }
+    },
+    {
+      "sku": "FR-ROUND-47-GOLD",
+      "name": "Круг 47",
+      "shape": "round",
+      "material": "acetate",
+      "color": "gold",
+      "colorRu": "Золото, тёплый жёлтый",
+      "lensWidthMm": 47,
+      "bridgeMm": 21,
+      "templeMm": 145,
+      "weightG": 21,
+      "priceTenge": 57600,
+      "mesh": "rig:round",
+      "colors": [
+        "gold",
+        "horn",
+        "black",
+        "silver"
+      ],
+      "anchor": {
+        "pupilY": 0,
+        "frontZ": 0,
+        "hingeX": 1
+      }
+    },
+    {
+      "sku": "FR-ROUND-47-SILVER",
+      "name": "Круг 47",
+      "shape": "round",
+      "material": "metal",
+      "color": "silver",
+      "colorRu": "Серебро, холодный серый",
+      "lensWidthMm": 47,
+      "bridgeMm": 21,
+      "templeMm": 145,
+      "weightG": 15,
+      "priceTenge": 57600,
+      "mesh": "rig:round",
+      "colors": [
+        "silver",
+        "horn",
+        "black",
+        "gold"
+      ],
+      "anchor": {
+        "pupilY": 0,
+        "frontZ": 0,
+        "hingeX": 1
+      }
+    },
+    {
+      "sku": "FR-ROUND-49-SILVER",
+      "name": "Круг 49",
+      "shape": "round",
+      "material": "metal",
+      "color": "silver",
+      "colorRu": "Серебро, холодный серый",
+      "lensWidthMm": 49,
+      "bridgeMm": 21,
+      "templeMm": 145,
+      "weightG": 15,
+      "priceTenge": 59400,
+      "mesh": "rig:round",
+      "colors": [
+        "silver",
+        "horn",
+        "black",
+        "gold"
+      ],
+      "anchor": {
+        "pupilY": 0,
+        "frontZ": 0,
+        "hingeX": 1
+      }
+    },
+    {
+      "sku": "FR-ROUND-51-HORN",
+      "name": "Круг 51",
+      "shape": "round",
+      "material": "acetate",
+      "color": "horn",
+      "colorRu": "Рог, тёмно-коричневый",
+      "lensWidthMm": 51,
+      "bridgeMm": 20,
+      "templeMm": 145,
+      "weightG": 21,
+      "priceTenge": 61200,
+      "mesh": "rig:round",
+      "colors": [
+        "horn",
+        "black",
+        "gold",
+        "silver"
+      ],
+      "anchor": {
+        "pupilY": 0,
+        "frontZ": 0,
+        "hingeX": 1
+      }
+    },
+    {
+      "sku": "FR-ROUND-51-BLACK",
+      "name": "Круг 51",
+      "shape": "round",
+      "material": "metal",
+      "color": "black",
+      "colorRu": "Чёрный, графит",
+      "lensWidthMm": 51,
+      "bridgeMm": 20,
+      "templeMm": 145,
+      "weightG": 15,
+      "priceTenge": 61200,
+      "mesh": "rig:round",
+      "colors": [
+        "black",
+        "horn",
+        "gold",
+        "silver"
+      ],
+      "anchor": {
+        "pupilY": 0,
+        "frontZ": 0,
+        "hingeX": 1
+      }
+    },
+    {
+      "sku": "FR-PANTO-48-TORTOISE",
+      "name": "Панто 48",
+      "shape": "panto",
+      "material": "acetate",
+      "color": "tortoise",
+      "colorRu": "Тортилла, коричнево-янтарный",
+      "lensWidthMm": 48,
+      "bridgeMm": 21,
+      "templeMm": 146,
+      "weightG": 24,
+      "priceTenge": 62000,
+      "mesh": "rig:panto",
+      "colors": [
+        "tortoise",
+        "black",
+        "crystal"
+      ],
+      "anchor": {
+        "pupilY": 0,
+        "frontZ": 0,
+        "hingeX": 1
+      }
+    },
+    {
+      "sku": "FR-PANTO-48-BLACK",
+      "name": "Панто 48",
+      "shape": "panto",
+      "material": "acetate",
+      "color": "black",
+      "colorRu": "Чёрный, графит",
+      "lensWidthMm": 48,
+      "bridgeMm": 21,
+      "templeMm": 146,
+      "weightG": 24,
+      "priceTenge": 62000,
+      "mesh": "rig:panto",
+      "colors": [
+        "black",
+        "tortoise",
+        "crystal"
+      ],
+      "anchor": {
+        "pupilY": 0,
+        "frontZ": 0,
+        "hingeX": 1
+      }
+    },
+    {
+      "sku": "FR-PANTO-50-BLACK",
+      "name": "Панто 50",
+      "shape": "panto",
+      "material": "acetate",
+      "color": "black",
+      "colorRu": "Чёрный, графит",
+      "lensWidthMm": 50,
+      "bridgeMm": 20,
+      "templeMm": 146,
+      "weightG": 24,
+      "priceTenge": 63800,
+      "mesh": "rig:panto",
+      "colors": [
+        "black",
+        "tortoise",
+        "crystal"
+      ],
+      "anchor": {
+        "pupilY": 0,
+        "frontZ": 0,
+        "hingeX": 1
+      }
+    },
+    {
+      "sku": "FR-PANTO-52-CRYSTAL",
+      "name": "Панто 52",
+      "shape": "panto",
+      "material": "acetate",
+      "color": "crystal",
+      "colorRu": "Кристалл, дымчато-серый",
+      "lensWidthMm": 52,
+      "bridgeMm": 20,
+      "templeMm": 146,
+      "weightG": 24,
+      "priceTenge": 65600,
+      "mesh": "rig:panto",
+      "colors": [
+        "crystal",
+        "tortoise",
+        "black"
+      ],
+      "anchor": {
+        "pupilY": 0,
+        "frontZ": 0,
+        "hingeX": 1
+      }
+    },
+    {
+      "sku": "FR-PANTO-52-TORTOISE",
+      "name": "Панто 52",
+      "shape": "panto",
+      "material": "acetate",
+      "color": "tortoise",
+      "colorRu": "Тортилла, коричнево-янтарный",
+      "lensWidthMm": 52,
+      "bridgeMm": 20,
+      "templeMm": 146,
+      "weightG": 24,
+      "priceTenge": 65600,
+      "mesh": "rig:panto",
+      "colors": [
+        "tortoise",
+        "black",
+        "crystal"
+      ],
+      "anchor": {
+        "pupilY": 0,
+        "frontZ": 0,
+        "hingeX": 1
+      }
+    },
+    {
+      "sku": "FR-PANTO-54-TORTOISE",
+      "name": "Панто 54",
+      "shape": "panto",
+      "material": "acetate",
+      "color": "tortoise",
+      "colorRu": "Тортилла, коричнево-янтарный",
+      "lensWidthMm": 54,
+      "bridgeMm": 19,
+      "templeMm": 146,
+      "weightG": 24,
+      "priceTenge": 67400,
+      "mesh": "rig:panto",
+      "colors": [
+        "tortoise",
+        "black",
+        "crystal"
+      ],
+      "anchor": {
+        "pupilY": 0,
+        "frontZ": 0,
+        "hingeX": 1
+      }
+    },
+    {
+      "sku": "FR-PANTO-56-BLACK",
+      "name": "Панто 56",
+      "shape": "panto",
+      "material": "acetate",
+      "color": "black",
+      "colorRu": "Чёрный, графит",
+      "lensWidthMm": 56,
+      "bridgeMm": 18,
+      "templeMm": 146,
+      "weightG": 24,
+      "priceTenge": 69200,
+      "mesh": "rig:panto",
+      "colors": [
+        "black",
+        "tortoise",
+        "crystal"
+      ],
+      "anchor": {
+        "pupilY": 0,
+        "frontZ": 0,
+        "hingeX": 1
+      }
+    },
+    {
+      "sku": "FR-PANTO-56-CRYSTAL",
+      "name": "Панто 56",
+      "shape": "panto",
+      "material": "acetate",
+      "color": "crystal",
+      "colorRu": "Кристалл, дымчато-серый",
+      "lensWidthMm": 56,
+      "bridgeMm": 18,
+      "templeMm": 146,
+      "weightG": 24,
+      "priceTenge": 69200,
+      "mesh": "rig:panto",
+      "colors": [
+        "crystal",
+        "tortoise",
+        "black"
+      ],
+      "anchor": {
+        "pupilY": 0,
+        "frontZ": 0,
+        "hingeX": 1
+      }
+    },
+    {
+      "sku": "FR-RECT-50-BLACK",
+      "name": "Прямоугольник 50",
+      "shape": "rect",
+      "material": "acetate",
+      "color": "black",
+      "colorRu": "Чёрный, графит",
+      "lensWidthMm": 50,
+      "bridgeMm": 18,
+      "templeMm": 148,
+      "weightG": 22,
+      "priceTenge": 58000,
+      "mesh": "rig:rect",
+      "colors": [
+        "black",
+        "gunmetal",
+        "tortoise"
+      ],
+      "anchor": {
+        "pupilY": 0,
+        "frontZ": 0,
+        "hingeX": 1
+      }
+    },
+    {
+      "sku": "FR-RECT-50-GUNMETAL",
+      "name": "Прямоугольник 50",
+      "shape": "rect",
+      "material": "metal",
+      "color": "gunmetal",
+      "colorRu": "Графит, сине-серый",
+      "lensWidthMm": 50,
+      "bridgeMm": 18,
+      "templeMm": 148,
+      "weightG": 16,
+      "priceTenge": 58000,
+      "mesh": "rig:rect",
+      "colors": [
+        "gunmetal",
+        "black",
+        "tortoise"
+      ],
+      "anchor": {
+        "pupilY": 0,
+        "frontZ": 0,
+        "hingeX": 1
+      }
+    },
+    {
+      "sku": "FR-RECT-52-GUNMETAL",
+      "name": "Прямоугольник 52",
+      "shape": "rect",
+      "material": "metal",
+      "color": "gunmetal",
+      "colorRu": "Графит, сине-серый",
+      "lensWidthMm": 52,
+      "bridgeMm": 18,
+      "templeMm": 148,
+      "weightG": 16,
+      "priceTenge": 59800,
+      "mesh": "rig:rect",
+      "colors": [
+        "gunmetal",
+        "black",
+        "tortoise"
+      ],
+      "anchor": {
+        "pupilY": 0,
+        "frontZ": 0,
+        "hingeX": 1
+      }
+    },
+    {
+      "sku": "FR-RECT-54-TORTOISE",
+      "name": "Прямоугольник 54",
+      "shape": "rect",
+      "material": "combo",
+      "color": "tortoise",
+      "colorRu": "Тортилла, коричнево-янтарный",
+      "lensWidthMm": 54,
+      "bridgeMm": 17,
+      "templeMm": 148,
+      "weightG": 24,
+      "priceTenge": 61600,
+      "mesh": "rig:rect",
+      "colors": [
+        "tortoise",
+        "black",
+        "gunmetal"
+      ],
+      "anchor": {
+        "pupilY": 0,
+        "frontZ": 0,
+        "hingeX": 1
+      }
+    },
+    {
+      "sku": "FR-RECT-54-BLACK",
+      "name": "Прямоугольник 54",
+      "shape": "rect",
+      "material": "acetate",
+      "color": "black",
+      "colorRu": "Чёрный, графит",
+      "lensWidthMm": 54,
+      "bridgeMm": 17,
+      "templeMm": 148,
+      "weightG": 22,
+      "priceTenge": 61600,
+      "mesh": "rig:rect",
+      "colors": [
+        "black",
+        "gunmetal",
+        "tortoise"
+      ],
+      "anchor": {
+        "pupilY": 0,
+        "frontZ": 0,
+        "hingeX": 1
+      }
+    },
+    {
+      "sku": "FR-RECT-56-BLACK",
+      "name": "Прямоугольник 56",
+      "shape": "rect",
+      "material": "acetate",
+      "color": "black",
+      "colorRu": "Чёрный, графит",
+      "lensWidthMm": 56,
+      "bridgeMm": 17,
+      "templeMm": 148,
+      "weightG": 22,
+      "priceTenge": 63400,
+      "mesh": "rig:rect",
+      "colors": [
+        "black",
+        "gunmetal",
+        "tortoise"
+      ],
+      "anchor": {
+        "pupilY": 0,
+        "frontZ": 0,
+        "hingeX": 1
+      }
+    },
+    {
+      "sku": "FR-RECT-58-GUNMETAL",
+      "name": "Прямоугольник 58",
+      "shape": "rect",
+      "material": "metal",
+      "color": "gunmetal",
+      "colorRu": "Графит, сине-серый",
+      "lensWidthMm": 58,
+      "bridgeMm": 16,
+      "templeMm": 148,
+      "weightG": 16,
+      "priceTenge": 65200,
+      "mesh": "rig:rect",
+      "colors": [
+        "gunmetal",
+        "black",
+        "tortoise"
+      ],
+      "anchor": {
+        "pupilY": 0,
+        "frontZ": 0,
+        "hingeX": 1
+      }
+    },
+    {
+      "sku": "FR-RECT-58-TORTOISE",
+      "name": "Прямоугольник 58",
+      "shape": "rect",
+      "material": "combo",
+      "color": "tortoise",
+      "colorRu": "Тортилла, коричнево-янтарный",
+      "lensWidthMm": 58,
+      "bridgeMm": 16,
+      "templeMm": 148,
+      "weightG": 24,
+      "priceTenge": 65200,
+      "mesh": "rig:rect",
+      "colors": [
+        "tortoise",
+        "black",
+        "gunmetal"
+      ],
+      "anchor": {
+        "pupilY": 0,
+        "frontZ": 0,
+        "hingeX": 1
+      }
+    },
+    {
+      "sku": "FR-SQUARE-48-BLACK",
+      "name": "Квадрат 48",
+      "shape": "square",
+      "material": "acetate",
+      "color": "black",
+      "colorRu": "Чёрный, графит",
+      "lensWidthMm": 48,
+      "bridgeMm": 21,
+      "templeMm": 145,
+      "weightG": 25,
+      "priceTenge": 56000,
+      "mesh": "rig:square",
+      "colors": [
+        "black",
+        "olive",
+        "horn"
+      ],
+      "anchor": {
+        "pupilY": 0,
+        "frontZ": 0,
+        "hingeX": 1
+      }
+    },
+    {
+      "sku": "FR-SQUARE-48-OLIVE",
+      "name": "Квадрат 48",
+      "shape": "square",
+      "material": "acetate",
+      "color": "olive",
+      "colorRu": "Олива, зеленовато-коричневый",
+      "lensWidthMm": 48,
+      "bridgeMm": 21,
+      "templeMm": 145,
+      "weightG": 25,
+      "priceTenge": 56000,
+      "mesh": "rig:square",
+      "colors": [
+        "olive",
+        "black",
+        "horn"
+      ],
+      "anchor": {
+        "pupilY": 0,
+        "frontZ": 0,
+        "hingeX": 1
+      }
+    },
+    {
+      "sku": "FR-SQUARE-50-OLIVE",
+      "name": "Квадрат 50",
+      "shape": "square",
+      "material": "acetate",
+      "color": "olive",
+      "colorRu": "Олива, зеленовато-коричневый",
+      "lensWidthMm": 50,
+      "bridgeMm": 20,
+      "templeMm": 145,
+      "weightG": 25,
+      "priceTenge": 57800,
+      "mesh": "rig:square",
+      "colors": [
+        "olive",
+        "black",
+        "horn"
+      ],
+      "anchor": {
+        "pupilY": 0,
+        "frontZ": 0,
+        "hingeX": 1
+      }
+    },
+    {
+      "sku": "FR-SQUARE-52-HORN",
+      "name": "Квадрат 52",
+      "shape": "square",
+      "material": "acetate",
+      "color": "horn",
+      "colorRu": "Рог, тёмно-коричневый",
+      "lensWidthMm": 52,
+      "bridgeMm": 19,
+      "templeMm": 145,
+      "weightG": 25,
+      "priceTenge": 59600,
+      "mesh": "rig:square",
+      "colors": [
+        "horn",
+        "black",
+        "olive"
+      ],
+      "anchor": {
+        "pupilY": 0,
+        "frontZ": 0,
+        "hingeX": 1
+      }
+    },
+    {
+      "sku": "FR-SQUARE-52-BLACK",
+      "name": "Квадрат 52",
+      "shape": "square",
+      "material": "acetate",
+      "color": "black",
+      "colorRu": "Чёрный, графит",
+      "lensWidthMm": 52,
+      "bridgeMm": 19,
+      "templeMm": 145,
+      "weightG": 25,
+      "priceTenge": 59600,
+      "mesh": "rig:square",
+      "colors": [
+        "black",
+        "olive",
+        "horn"
+      ],
+      "anchor": {
+        "pupilY": 0,
+        "frontZ": 0,
+        "hingeX": 1
+      }
+    },
+    {
+      "sku": "FR-SQUARE-54-BLACK",
+      "name": "Квадрат 54",
+      "shape": "square",
+      "material": "acetate",
+      "color": "black",
+      "colorRu": "Чёрный, графит",
+      "lensWidthMm": 54,
+      "bridgeMm": 19,
+      "templeMm": 145,
+      "weightG": 25,
+      "priceTenge": 61400,
+      "mesh": "rig:square",
+      "colors": [
+        "black",
+        "olive",
+        "horn"
+      ],
+      "anchor": {
+        "pupilY": 0,
+        "frontZ": 0,
+        "hingeX": 1
+      }
+    },
+    {
+      "sku": "FR-CAT-49-BURGUNDY",
+      "name": "Кошка 49",
+      "shape": "cat",
+      "material": "acetate",
+      "color": "burgundy",
+      "colorRu": "Бордо, тёмно-красный",
+      "lensWidthMm": 49,
+      "bridgeMm": 19,
+      "templeMm": 140,
+      "weightG": 23,
+      "priceTenge": 64000,
+      "mesh": "rig:cat",
+      "colors": [
+        "burgundy",
+        "tortoise",
+        "black"
+      ],
+      "anchor": {
+        "pupilY": 0,
+        "frontZ": 0,
+        "hingeX": 1
+      }
+    },
+    {
+      "sku": "FR-CAT-49-TORTOISE",
+      "name": "Кошка 49",
+      "shape": "cat",
+      "material": "acetate",
+      "color": "tortoise",
+      "colorRu": "Тортилла, коричнево-янтарный",
+      "lensWidthMm": 49,
+      "bridgeMm": 19,
+      "templeMm": 140,
+      "weightG": 23,
+      "priceTenge": 64000,
+      "mesh": "rig:cat",
+      "colors": [
+        "tortoise",
+        "burgundy",
+        "black"
+      ],
+      "anchor": {
+        "pupilY": 0,
+        "frontZ": 0,
+        "hingeX": 1
+      }
+    },
+    {
+      "sku": "FR-CAT-51-TORTOISE",
+      "name": "Кошка 51",
+      "shape": "cat",
+      "material": "acetate",
+      "color": "tortoise",
+      "colorRu": "Тортилла, коричнево-янтарный",
+      "lensWidthMm": 51,
+      "bridgeMm": 18,
+      "templeMm": 140,
+      "weightG": 23,
+      "priceTenge": 65800,
+      "mesh": "rig:cat",
+      "colors": [
+        "tortoise",
+        "burgundy",
+        "black"
+      ],
+      "anchor": {
+        "pupilY": 0,
+        "frontZ": 0,
+        "hingeX": 1
+      }
+    },
+    {
+      "sku": "FR-CAT-53-BLACK",
+      "name": "Кошка 53",
+      "shape": "cat",
+      "material": "acetate",
+      "color": "black",
+      "colorRu": "Чёрный, графит",
+      "lensWidthMm": 53,
+      "bridgeMm": 17,
+      "templeMm": 140,
+      "weightG": 23,
+      "priceTenge": 67600,
+      "mesh": "rig:cat",
+      "colors": [
+        "black",
+        "burgundy",
+        "tortoise"
+      ],
+      "anchor": {
+        "pupilY": 0,
+        "frontZ": 0,
+        "hingeX": 1
+      }
+    },
+    {
+      "sku": "FR-CAT-53-BURGUNDY",
+      "name": "Кошка 53",
+      "shape": "cat",
+      "material": "acetate",
+      "color": "burgundy",
+      "colorRu": "Бордо, тёмно-красный",
+      "lensWidthMm": 53,
+      "bridgeMm": 17,
+      "templeMm": 140,
+      "weightG": 23,
+      "priceTenge": 67600,
+      "mesh": "rig:cat",
+      "colors": [
+        "burgundy",
+        "tortoise",
+        "black"
+      ],
+      "anchor": {
+        "pupilY": 0,
+        "frontZ": 0,
+        "hingeX": 1
+      }
+    },
+    {
+      "sku": "FR-CAT-55-BURGUNDY",
+      "name": "Кошка 55",
+      "shape": "cat",
+      "material": "acetate",
+      "color": "burgundy",
+      "colorRu": "Бордо, тёмно-красный",
+      "lensWidthMm": 55,
+      "bridgeMm": 17,
+      "templeMm": 140,
+      "weightG": 23,
+      "priceTenge": 69400,
+      "mesh": "rig:cat",
+      "colors": [
+        "burgundy",
+        "tortoise",
+        "black"
+      ],
+      "anchor": {
+        "pupilY": 0,
+        "frontZ": 0,
+        "hingeX": 1
+      }
+    },
+    {
+      "sku": "FR-BROWLINE-51-BLACK",
+      "name": "Броулайны 51",
+      "shape": "browline",
+      "material": "combo",
+      "color": "black",
+      "colorRu": "Чёрный, графит",
+      "lensWidthMm": 51,
+      "bridgeMm": 19,
+      "templeMm": 147,
+      "weightG": 28,
+      "priceTenge": 71000,
+      "mesh": "rig:browline",
+      "colors": [
+        "black",
+        "tortoise",
+        "gunmetal"
+      ],
+      "anchor": {
+        "pupilY": 0,
+        "frontZ": 0,
+        "hingeX": 1
+      }
+    },
+    {
+      "sku": "FR-BROWLINE-51-TORTOISE",
+      "name": "Броулайны 51",
+      "shape": "browline",
+      "material": "combo",
+      "color": "tortoise",
+      "colorRu": "Тортилла, коричнево-янтарный",
+      "lensWidthMm": 51,
+      "bridgeMm": 19,
+      "templeMm": 147,
+      "weightG": 28,
+      "priceTenge": 71000,
+      "mesh": "rig:browline",
+      "colors": [
+        "tortoise",
+        "black",
+        "gunmetal"
+      ],
+      "anchor": {
+        "pupilY": 0,
+        "frontZ": 0,
+        "hingeX": 1
+      }
+    },
+    {
+      "sku": "FR-BROWLINE-53-TORTOISE",
+      "name": "Броулайны 53",
+      "shape": "browline",
+      "material": "combo",
+      "color": "tortoise",
+      "colorRu": "Тортилла, коричнево-янтарный",
+      "lensWidthMm": 53,
+      "bridgeMm": 18,
+      "templeMm": 147,
+      "weightG": 28,
+      "priceTenge": 72800,
+      "mesh": "rig:browline",
+      "colors": [
+        "tortoise",
+        "black",
+        "gunmetal"
+      ],
+      "anchor": {
+        "pupilY": 0,
+        "frontZ": 0,
+        "hingeX": 1
+      }
+    },
+    {
+      "sku": "FR-BROWLINE-55-GUNMETAL",
+      "name": "Броулайны 55",
+      "shape": "browline",
+      "material": "combo",
+      "color": "gunmetal",
+      "colorRu": "Графит, сине-серый",
+      "lensWidthMm": 55,
+      "bridgeMm": 17,
+      "templeMm": 147,
+      "weightG": 28,
+      "priceTenge": 74600,
+      "mesh": "rig:browline",
+      "colors": [
+        "gunmetal",
+        "black",
+        "tortoise"
+      ],
+      "anchor": {
+        "pupilY": 0,
+        "frontZ": 0,
+        "hingeX": 1
+      }
+    },
+    {
+      "sku": "FR-BROWLINE-55-BLACK",
+      "name": "Броулайны 55",
+      "shape": "browline",
+      "material": "combo",
+      "color": "black",
+      "colorRu": "Чёрный, графит",
+      "lensWidthMm": 55,
+      "bridgeMm": 17,
+      "templeMm": 147,
+      "weightG": 28,
+      "priceTenge": 74600,
+      "mesh": "rig:browline",
+      "colors": [
+        "black",
+        "tortoise",
+        "gunmetal"
+      ],
+      "anchor": {
+        "pupilY": 0,
+        "frontZ": 0,
+        "hingeX": 1
+      }
+    },
+    {
+      "sku": "FR-BROWLINE-57-BLACK",
+      "name": "Броулайны 57",
+      "shape": "browline",
+      "material": "combo",
+      "color": "black",
+      "colorRu": "Чёрный, графит",
+      "lensWidthMm": 57,
+      "bridgeMm": 17,
+      "templeMm": 147,
+      "weightG": 28,
+      "priceTenge": 76400,
+      "mesh": "rig:browline",
+      "colors": [
+        "black",
+        "tortoise",
+        "gunmetal"
+      ],
+      "anchor": {
+        "pupilY": 0,
+        "frontZ": 0,
+        "hingeX": 1
+      }
+    },
+    {
+      "sku": "FR-AVIATOR-55-GOLD",
+      "name": "Авиатор 55",
+      "shape": "aviator",
+      "material": "metal",
+      "color": "gold",
+      "colorRu": "Золото, тёплый жёлтый",
+      "lensWidthMm": 55,
+      "bridgeMm": 16,
+      "templeMm": 140,
+      "weightG": 12,
+      "priceTenge": 68000,
+      "mesh": "rig:aviator",
+      "colors": [
+        "gold",
+        "silver",
+        "gunmetal"
+      ],
+      "anchor": {
+        "pupilY": 0,
+        "frontZ": 0,
+        "hingeX": 1
+      }
+    },
+    {
+      "sku": "FR-AVIATOR-55-SILVER",
+      "name": "Авиатор 55",
+      "shape": "aviator",
+      "material": "metal",
+      "color": "silver",
+      "colorRu": "Серебро, холодный серый",
+      "lensWidthMm": 55,
+      "bridgeMm": 16,
+      "templeMm": 140,
+      "weightG": 12,
+      "priceTenge": 68000,
+      "mesh": "rig:aviator",
+      "colors": [
+        "silver",
+        "gold",
+        "gunmetal"
+      ],
+      "anchor": {
+        "pupilY": 0,
+        "frontZ": 0,
+        "hingeX": 1
+      }
+    },
+    {
+      "sku": "FR-AVIATOR-57-SILVER",
+      "name": "Авиатор 57",
+      "shape": "aviator",
+      "material": "metal",
+      "color": "silver",
+      "colorRu": "Серебро, холодный серый",
+      "lensWidthMm": 57,
+      "bridgeMm": 15,
+      "templeMm": 140,
+      "weightG": 12,
+      "priceTenge": 69800,
+      "mesh": "rig:aviator",
+      "colors": [
+        "silver",
+        "gold",
+        "gunmetal"
+      ],
+      "anchor": {
+        "pupilY": 0,
+        "frontZ": 0,
+        "hingeX": 1
+      }
+    },
+    {
+      "sku": "FR-AVIATOR-59-GUNMETAL",
+      "name": "Авиатор 59",
+      "shape": "aviator",
+      "material": "metal",
+      "color": "gunmetal",
+      "colorRu": "Графит, сине-серый",
+      "lensWidthMm": 59,
+      "bridgeMm": 14,
+      "templeMm": 140,
+      "weightG": 12,
+      "priceTenge": 71600,
+      "mesh": "rig:aviator",
+      "colors": [
+        "gunmetal",
+        "gold",
+        "silver"
+      ],
+      "anchor": {
+        "pupilY": 0,
+        "frontZ": 0,
+        "hingeX": 1
+      }
+    },
+    {
+      "sku": "FR-AVIATOR-59-GOLD",
+      "name": "Авиатор 59",
+      "shape": "aviator",
+      "material": "metal",
+      "color": "gold",
+      "colorRu": "Золото, тёплый жёлтый",
+      "lensWidthMm": 59,
+      "bridgeMm": 14,
+      "templeMm": 140,
+      "weightG": 12,
+      "priceTenge": 71600,
+      "mesh": "rig:aviator",
+      "colors": [
+        "gold",
+        "silver",
+        "gunmetal"
+      ],
+      "anchor": {
+        "pupilY": 0,
+        "frontZ": 0,
+        "hingeX": 1
+      }
+    },
+    {
+      "sku": "FR-AVIATOR-61-GOLD",
+      "name": "Авиатор 61",
+      "shape": "aviator",
+      "material": "metal",
+      "color": "gold",
+      "colorRu": "Золото, тёплый жёлтый",
+      "lensWidthMm": 61,
+      "bridgeMm": 14,
+      "templeMm": 140,
+      "weightG": 12,
+      "priceTenge": 73400,
+      "mesh": "rig:aviator",
+      "colors": [
+        "gold",
+        "silver",
+        "gunmetal"
+      ],
+      "anchor": {
+        "pupilY": 0,
+        "frontZ": 0,
+        "hingeX": 1
+      }
+    }
+  ]
+}
