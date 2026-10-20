@@ -1,22 +1,19 @@
 import { readFileSync, readdirSync, statSync } from "node:fs";
+import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
 import { describeSource, type Finding } from "@/lib/a11y-copy";
 
-function sources(dir: string, base = ""): string[] {
-  const root = new URL(dir.startsWith("..") ? dir : `../../${dir}`, import.meta.url);
-  const walk = (rel: string): string[] => {
-    const abs = new URL(`../../${rel}`, import.meta.url);
-    return readdirSync(abs).flatMap((name) => {
-      const child = `${rel}/${name}`;
-      const st = statSync(new URL(`../../${child}`, import.meta.url));
-      if (st.isDirectory()) {
-        return walk(child);
-      }
-      return /\.(tsx|ts)$/.test(name) && !/\.test\./.test(name) ? [child] : [];
-    });
-  };
-  void root;
-  return walk(dir);
+const ROOT = fileURLToPath(new URL("../../", import.meta.url));
+
+function sources(dir: string): string[] {
+  const abs = `${ROOT}${dir}`;
+  return readdirSync(abs).flatMap((name) => {
+    const child = `${abs}/${name}`;
+    if (statSync(child).isDirectory()) {
+      return sources(`${dir}/${name}`);
+    }
+    return /\.(tsx|ts)$/.test(name) && !/\.test\./.test(name) ? [child] : [];
+  });
 }
 
 const FILES = [...sources("src/app"), ...sources("src/components")];
@@ -27,9 +24,9 @@ describe("voice rules", () => {
   });
 
   it("finds no banned glyph, praise copy or titled period in the interface", () => {
-    const findings: Finding[] = FILES.flatMap((f) =>
-      describeSource(readFileSync(new URL(`../../${f}`, import.meta.url), "utf8"), f),
-    );
+    const findings: Finding[] = FILES.map((f) =>
+      describeSource(readFileSync(f, "utf8"), f.replace(ROOT, "")),
+    ).flat();
     expect(findings).toEqual([]);
   });
 });
