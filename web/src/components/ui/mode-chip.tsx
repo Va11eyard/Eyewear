@@ -12,13 +12,13 @@ export function ModeChip({
       type="button"
       onClick={onSelect}
       aria-pressed={selected}
-      className={`inline-flex min-h-10 items-center gap-2 rounded-full border px-4 text-sm transition-colors ${
+      className={`inline-flex min-h-10 items-center gap-2.5 border px-4 text-[11px] uppercase tracking-[0.14em] transition-colors ${
         selected
           ? "border-ink bg-ink text-paper"
-          : "border-line-2 text-ink-2 hover:border-ink hover:text-ink"
+          : "border-line-2 text-ink-2 hover:border-oxblood hover:text-oxblood"
       }`}
     >
-      <span aria-hidden="true" className={`h-1.5 w-1.5 rounded-full ${selected ? "bg-paper" : "bg-line-2"}`} />
+      <span aria-hidden="true" className={`h-px w-4 ${selected ? "bg-paper" : "bg-line-2"}`} />
       {label}
     </button>
   );

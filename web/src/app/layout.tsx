@@ -1,20 +1,21 @@
 import type { Metadata } from "next";
-import { IBM_Plex_Mono, Literata, Manrope } from "next/font/google";
+import { IBM_Plex_Mono, Jost, Prata } from "next/font/google";
 import "./globals.css";
 
-// Cyrillic is not optional here: the whole interface is Russian. Fraunces and
-// Archivo were rejected because next/font reports no cyrillic subset for them,
-// which would have rendered every headline in the Georgia fallback.
-const display = Literata({
+// Every family here is verified to carry a cyrillic subset. Fraunces, Archivo,
+// Cinzel, Marcellus and Italiana were rejected on that evidence rather than on
+// taste: without cyrillic a Russian interface silently drops to Georgia.
+const display = Prata({
   subsets: ["latin", "cyrillic"],
-  weight: ["300", "400", "500", "600"],
-  variable: "--font-literata",
+  weight: ["400"],
+  variable: "--font-prata",
   display: "swap",
 });
 
-const sans = Manrope({
+const sans = Jost({
   subsets: ["latin", "cyrillic"],
-  variable: "--font-manrope",
+  weight: ["300", "400", "500"],
+  variable: "--font-jost",
   display: "swap",
 });
 

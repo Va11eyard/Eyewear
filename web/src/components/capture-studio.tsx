@@ -272,7 +272,7 @@ function CaptureShell({
 }) {
   return (
     <div className="mx-auto flex min-h-[calc(100dvh-4.5rem)] max-w-3xl flex-col items-center gap-8 px-6 py-10">
-      <section className="relative aspect-[3/4] w-full max-w-[28rem] overflow-hidden rounded-[1.75rem] bg-night shadow-[0_24px_60px_oklch(0.2_0.02_42/0.18)]">
+      <section className="relative aspect-[3/4] w-full max-w-[28rem] overflow-hidden border border-night bg-night">
         <video
           ref={videoRef}
           className="h-full w-full object-cover"
@@ -303,7 +303,7 @@ function CaptureShell({
           type="button"
           onClick={onCapture}
           disabled={measureDisabled}
-          className="min-h-12 rounded-full bg-vermilion px-6 text-sm font-medium text-vermilion-fg disabled:opacity-50"
+          className="min-h-12 bg-ink px-8 text-[12.5px] font-medium uppercase tracking-[0.11em] text-paper disabled:opacity-50"
         >
           Снять мерки и подобрать оправы
         </button>
@@ -327,7 +327,7 @@ function CaptureShell({
 
 function HeadCard({ head, size }: { head: Head; size: string }) {
   return (
-    <dl className="grid grid-cols-2 gap-3 rounded-2xl border border-line p-4 text-sm">
+    <dl className="grid grid-cols-2 gap-3 border border-line p-4 text-sm">
       <div>
         <dt className="text-mute">IPD (оценка)</dt>
         <dd className="font-medium">{head.ipdMm} мм</dd>
@@ -363,15 +363,15 @@ function VisitCard({
   onShare: () => void;
 }) {
   return (
-    <div className="rounded-2xl border border-line p-4">
+    <div className="border border-line p-4">
       <p className="text-sm font-medium">Пакет для салона</p>
       <pre className="mt-2 whitespace-pre-wrap font-sans text-xs leading-relaxed text-mute">{packet}</pre>
       <div className="mt-3 flex flex-wrap gap-2">
-        <button type="button" onClick={onCopy} className="min-h-10 rounded-full border border-line px-4 text-sm">
+        <button type="button" onClick={onCopy} className="min-h-10 border border-line px-5 text-[12px] uppercase tracking-[0.11em]">
           {copied ? "Скопировано" : "Скопировать"}
         </button>
         {typeof navigator !== "undefined" && "share" in navigator ? (
-          <button type="button" onClick={onShare} className="min-h-10 rounded-full border border-line px-4 text-sm">
+          <button type="button" onClick={onShare} className="min-h-10 border border-line px-5 text-[12px] uppercase tracking-[0.11em]">
             Поделиться
           </button>
         ) : null}
@@ -399,7 +399,7 @@ function CityField({
     <label className="flex flex-col gap-2 text-sm">
       <span className="text-mute">Город для поиска оптик</span>
       <select
-        className="min-h-12 rounded-2xl border border-line bg-paper px-3"
+        className="min-h-12 border border-line bg-paper px-3"
         value={cityId}
         onChange={(e) => onCity(e.target.value)}
       >
@@ -518,7 +518,7 @@ function ShopList({ shops, packet }: { shops: Shop[]; packet: string }) {
   return (
     <ul className="space-y-3">
       {shops.map((s) => (
-        <li key={s.id} className="rounded-2xl border border-line p-4">
+        <li key={s.id} className="border border-line p-4">
           <p className="font-medium">{s.name}</p>
           <p className="text-sm text-mute">{s.address}</p>
           {s.km != null ? <p className="text-xs text-mute">{s.km.toFixed(1)} км</p> : null}

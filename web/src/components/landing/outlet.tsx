@@ -15,7 +15,7 @@ export function Outlets() {
       <div className="mx-auto max-w-[1240px]">
         <div className="grid items-end gap-12 border-b border-line pb-6 md:grid-cols-2">
           <div>
-            <p className="mb-3.5 flex items-baseline gap-4 text-[11px] tracking-[0.1em] text-vermilion">
+            <p className="mb-3.5 flex items-baseline gap-4 text-[11px] tracking-[0.1em] text-oxblood">
               <span className="font-mono">05</span>
               <span className="text-[10px] uppercase tracking-[0.18em] text-mute">Рядом</span>
             </p>
@@ -37,8 +37,8 @@ export function Outlets() {
                   {s.address} · Астана
                 </p>
                 <p className="mt-2.5 flex flex-wrap gap-x-5 text-[11px] text-ink-2">
-                  {s.phone ? <a className="measured underline decoration-line-2 underline-offset-2 hover:text-vermilion" href={`tel:${s.phone}`}>{s.phone}</a> : null}
-                  {s.mapUrl ? <a className="underline decoration-line-2 underline-offset-2 hover:text-vermilion" href={s.mapUrl}>Открыть в 2GIS</a> : null}
+                  {s.phone ? <a className="measured underline decoration-line-2 underline-offset-2 hover:text-oxblood" href={`tel:${s.phone}`}>{s.phone}</a> : null}
+                  {s.mapUrl ? <a className="underline decoration-line-2 underline-offset-2 hover:text-oxblood" href={s.mapUrl}>Открыть в 2GIS</a> : null}
                   {s.rating ? <span className="measured text-mute">оценка {s.rating.toFixed(1).replace(".", ",")}</span> : null}
                 </p>
               </div>

@@ -1,99 +1,63 @@
-import { MeasureRow } from "@/components/ui/measure-row";
-import { confidenceBand } from "@/lib/fit-math";
+const EXAMPLE = [
+  { n: "01", what: "Межзрачковое расстояние", value: "63 мм", how: "По центру радужки на 3D-сетке, усреднение по 12 кадрам", spread: "±0,8" },
+  { n: "02", what: "Ширина лица", value: "145 мм", how: "По выступающим точкам скул с учётом поворота головы", spread: "±1,5" },
+  { n: "03", what: "Форма лица", value: "Овальная", how: "Отношения лоб, скулы, челюсть, высота; шесть классов", spread: "4 из 5" },
+  { n: "04", what: "Типоразмер оправы", value: "54-20-145", how: "Заводская маркировка на дужке: глаз, мост, дужка", spread: "справочно" },
+  { n: "05", what: "Посадка по ширине", value: "+2 мм", how: "Развёрнутая ширина фронта против ширины лица", spread: "в допуске" },
+];
 
-/**
- * An example calculation, not the visitor's data: nobody has pointed a camera
- * yet, so any number here that claimed to be yours would be invented.
- */
-const EXAMPLE = {
-  ipd: { label: "Межзрачковое расстояние", value: "63", unit: "мм", tolerance: "±0,8", agreed: 5, how: "По центру радужки на 3D-сетке, усреднение по 12 кадрам" },
-  width: { label: "Ширина лица", value: "145", unit: "мм", tolerance: "±1,5", agreed: 4, how: "По выступающим точкам скул с учётом поворота головы" },
-  shape: { label: "Форма лица", value: "Овальная", unit: "", tolerance: "4 из 5", agreed: 4, how: "Отношения лоб, скулы, челюсть, высота; шесть классов" },
-  size: { label: "Типоразмер оправы", value: "54-20-145", unit: "", tolerance: "справочно", agreed: 5, how: "Заводская маркировка на дужке: глаз, мост, дужка" },
-  fit: { label: "Посадка по ширине", value: "+2", unit: "мм", tolerance: "в допуске", agreed: 4, how: "Развёрнутая ширина оправы против ширины лица" },
-};
-
-const STEPS = [
-  ["01", "Съёмка", "Браузер берёт живой кадр Стоковых портретов в продукте нет: если анфас не набран, мерки не считаем"],
-  ["02", "Геометрия", "MediaPipe даёт 468 точек с глубиной и матрицу поворота Из них считаем IPD, ширину и форму лица"],
-  ["03", "Посадка", "Оправы ранжируются по совместимости ширины и формы, а не по популярности Три модели, без повторов формы"],
+const BAND = [
+  ["Кадр не сохраняется", "Обработка идёт в браузере, в истории остаются только числа"],
+  ["49 моделей", "Форма строится из размерного кода, цвет подписан словами"],
+  ["Салоны из каталога", "Записи ODOS и 2GIS по геолокации, наличие уточняйте на месте"],
 ];
 
 export function Method() {
   return (
     <>
-      <section className="px-6 py-16 md:px-10">
-        <div className="mx-auto max-w-[1240px]">
-          <div className="grid items-end gap-12 border-b border-line pb-6 md:grid-cols-2">
-            <div>
-              <p className="mb-3.5 flex items-baseline gap-4 text-[11px] tracking-[0.1em] text-vermilion">
-                <span className="font-mono">01</span>
-                <span className="text-[10px] uppercase tracking-[0.18em] text-mute">Что считаем</span>
-              </p>
-              <h2 className="font-display text-[clamp(1.9rem,3.4vw,2.7rem)] leading-[1.04] font-medium tracking-[-0.03em]">
-                Пять чисел, а не тип лица из стока
-              </h2>
-            </div>
-            <p className="text-[15px] leading-relaxed text-mute">
-              Каждая строка содержит измерение, источник и разброс Там, где ориентиров сетки не
-              хватает, уверенность падает, и мы это пишем прямо
-            </p>
-          </div>
-          <div className="mt-2 grid gap-x-14 gap-y-8 md:grid-cols-2">
-            <div>
-              {Object.values(EXAMPLE).map((row) => (
-                <MeasureRow
-                  key={row.label}
-                  label={row.label}
-                  value={row.value}
-                  unit={row.unit}
-                  tolerance={row.tolerance}
-                  band={confidenceBand(row.agreed).pct}
-                />
-              ))}
-            </div>
-            <dl className="grid gap-0 self-start">
-              {Object.values(EXAMPLE).map((row) => (
-                <div key={row.label} className="border-b border-line py-3 text-[13px] leading-relaxed text-mute">
-                  <dt className="sr-only">{row.label}</dt>
-                  <dd>{row.how}</dd>
-                </div>
-              ))}
-              <p className="pt-4 text-[11px] text-mute">
-                Значения из демонстрационного расчёта Ваших мерок здесь быть не может: камера ещё
-                не включалась
-              </p>
-            </dl>
-          </div>
+      <section className="mx-auto max-w-[1280px] px-6 py-14 md:px-10">
+        <div className="flex flex-wrap items-baseline justify-between gap-4 border-b border-ink pb-3">
+          <h2 className="font-display text-[clamp(1.7rem,3vw,2.2rem)]">Что мы измеряем</h2>
+          <span className="ledger-label">List I</span>
         </div>
+        <table className="mt-2 w-full border-collapse text-left">
+          <thead>
+            <tr className="border-b border-line">
+              <th className="ledger-label py-3 pr-4 font-normal">№</th>
+              <th className="ledger-label py-3 pr-4 font-normal">Позиция</th>
+              <th className="ledger-label py-3 pr-4 font-normal">Как получено</th>
+              <th className="ledger-label py-3 pr-4 text-right font-normal">Значение</th>
+              <th className="ledger-label py-3 text-right font-normal">Разброс</th>
+            </tr>
+          </thead>
+          <tbody>
+            {EXAMPLE.map((r) => (
+              <tr key={r.n} className="border-b border-line align-top">
+                <td className="measured py-3.5 pr-4 text-[11px] text-mute">{r.n}</td>
+                <td className="py-3.5 pr-4 text-[15px]">{r.what}</td>
+                <td className="max-w-[38ch] py-3.5 pr-4 text-[13.5px] leading-relaxed text-mute">{r.how}</td>
+                <td className="measured py-3.5 pr-4 text-right text-[14px] whitespace-nowrap">{r.value}</td>
+                <td className="measured py-3.5 text-right text-[12px] text-mute whitespace-nowrap">{r.spread}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <p className="mt-4 text-[11px] leading-relaxed text-mute">
+          <span className="ledger-label block">Значения из демонстрационного расчёта</span>
+          <span className="mt-2 block">
+            Ваших мерок здесь быть не может: камера ещё не включалась
+          </span>
+        </p>
       </section>
 
-      <section className="px-6 py-16 md:px-10">
-        <div className="mx-auto max-w-[1240px]">
-          <div className="grid items-end gap-12 border-b border-line pb-6 md:grid-cols-2">
-            <div>
-              <p className="mb-3.5 flex items-baseline gap-4 text-[11px] tracking-[0.1em] text-vermilion">
-                <span className="font-mono">02</span>
-                <span className="text-[10px] uppercase tracking-[0.18em] text-mute">Процесс</span>
-              </p>
-              <h2 className="font-display text-[clamp(1.9rem,3.4vw,2.7rem)] leading-[1.04] font-medium tracking-[-0.03em]">
-                Три шага, меньше минуты
-              </h2>
+      <section className="mx-auto max-w-[1280px] px-6 pb-16 md:px-10">
+        <div className="grid gap-x-10 gap-y-8 border-t border-line-2 pt-4 md:grid-cols-3">
+          {BAND.map(([title, body]) => (
+            <div key={title} className="border-t border-line-2 pt-4">
+              <h3 className="font-display text-[21px]">{title}</h3>
+              <p className="mt-2 text-[13.5px] leading-[1.65] text-mute">{body}</p>
             </div>
-            <p className="text-[15px] leading-relaxed text-mute">
-              Никаких загруженных фото и анкет Камера, геометрия, список салонов, куда можно
-              позвонить с готовыми мерками
-            </p>
-          </div>
-          <ol className="grid border-t border-line md:grid-cols-3">
-            {STEPS.map(([n, title, body]) => (
-              <li key={n} className="border-b border-line py-9 pr-8 md:border-r md:last:border-r-0">
-                <p className="font-display text-[64px] leading-none font-light tracking-[-0.05em] text-line-2">{n}</p>
-                <h3 className="font-display mt-4 text-xl font-medium tracking-[-0.02em]">{title}</h3>
-                <p className="mt-2.5 max-w-[34ch] text-sm leading-relaxed text-mute">{body}</p>
-              </li>
-            ))}
-          </ol>
+          ))}
         </div>
       </section>
     </>

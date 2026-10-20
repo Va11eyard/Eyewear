@@ -13,7 +13,7 @@ export function Catalogue() {
       <div className="mx-auto max-w-[1240px]">
         <div className="grid items-end gap-12 border-b border-line pb-6 md:grid-cols-2">
           <div>
-            <p className="mb-3.5 flex items-baseline gap-4 text-[11px] tracking-[0.1em] text-vermilion">
+            <p className="mb-3.5 flex items-baseline gap-4 text-[11px] tracking-[0.1em] text-oxblood">
               <span className="font-mono">03</span>
               <span className="text-[10px] uppercase tracking-[0.18em] text-mute">Каталог</span>
             </p>
@@ -90,7 +90,7 @@ export function ColourTeaser() {
     <section className="px-6 py-16 md:px-10">
       <div className="mx-auto grid max-w-[1240px] items-center gap-12 md:grid-cols-[1fr_1fr]">
         <div>
-          <p className="mb-3.5 flex items-baseline gap-4 text-[11px] tracking-[0.1em] text-vermilion">
+          <p className="mb-3.5 flex items-baseline gap-4 text-[11px] tracking-[0.1em] text-oxblood">
             <span className="font-mono">04</span>
             <span className="text-[10px] uppercase tracking-[0.18em] text-mute">Цветовое зрение</span>
           </p>
@@ -106,7 +106,7 @@ export function ColourTeaser() {
             Подбор режима ориентировочный Диагноз мы не ставим, зрение не проверяем и линзы не
             назначаем
           </p>
-          <Link href="/how" className="mt-7 inline-block text-sm font-medium text-ink-2 underline decoration-line-2 underline-offset-4 hover:text-vermilion">
+          <Link href="/how" className="mt-7 inline-block text-sm font-medium text-ink-2 underline decoration-line-2 underline-offset-4 hover:text-oxblood">
             Как это считается
           </Link>
         </div>
@@ -116,7 +116,7 @@ export function ColourTeaser() {
             <Lines colors={SIMULATED} adapted={false} />
           </div>
           <div>
-            <p className="bg-paper px-3 py-2 text-[9px] uppercase tracking-[0.14em] text-vermilion">Адаптация</p>
+            <p className="bg-paper px-3 py-2 text-[9px] uppercase tracking-[0.14em] text-oxblood">Адаптация</p>
             <Lines colors={ADAPTED} adapted />
           </div>
         </div>

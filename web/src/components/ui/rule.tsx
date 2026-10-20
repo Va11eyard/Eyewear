@@ -1,27 +1,11 @@
-const TICKS =
-  "repeating-linear-gradient(90deg, var(--color-line-2) 0 1px, transparent 1px 10px)," +
-  "repeating-linear-gradient(90deg, var(--color-line-2) 0 1px, transparent 1px 50px)";
-
-/** The section divider is a millimetre rule, so the page measures itself. */
-export function Rule({ labels = ["0", "20", "40", "60", "80 мм"] }: { labels?: string[] }) {
+/** A single ink-tinted hairline with an optional daybook marker. The houses
+ *  studied use one rule, never a double, and no ornamental divider. */
+export function Rule({ label }: { label?: string }) {
   return (
-    <div
-      aria-hidden="true"
-      className="relative h-8 border-y border-line"
-      style={{ backgroundImage: TICKS }}
-    >
-      {labels.map((label, i) => {
-        const last = i === labels.length - 1;
-        return (
-          <span
-            key={label}
-            className="measured absolute top-1.5 text-[9px] text-mute"
-            style={last ? { right: 0 } : { left: `${(i / labels.length) * 100}%` }}
-          >
-            {label}
-          </span>
-        );
-      })}
+    <div aria-hidden="true" className="px-6 md:px-10">
+      <div className="mx-auto flex max-w-[1280px] items-center gap-6 border-t border-line pt-3">
+        {label ? <span className="ledger-label">{label}</span> : null}
+      </div>
     </div>
   );
 }

@@ -9,13 +9,15 @@ type Props = {
   type?: "button" | "submit";
 };
 
+/** A primary action is a solid ink rectangle with letterspaced caps, the shop
+ *  sign rather than a pill. */
 export function PillButton({ children, onClick, href, disabled, icon, type = "button" }: Props) {
   const cls =
-    "inline-flex min-h-12 items-center justify-center gap-2.5 rounded-full bg-ink px-6 text-sm font-medium text-paper transition-colors hover:bg-vermilion disabled:opacity-40 disabled:hover:bg-ink";
+    "inline-flex min-h-12 items-center justify-center gap-3 bg-ink px-7 text-[12.5px] font-medium uppercase tracking-[0.11em] text-paper transition-colors hover:bg-oxblood disabled:opacity-40 disabled:hover:bg-ink";
   const inner = (
     <>
       {children}
-      {icon ? <Icon name={icon} className="text-base" /> : null}
+      {icon ? <Icon name={icon} className="text-sm" /> : null}
     </>
   );
   if (href) {

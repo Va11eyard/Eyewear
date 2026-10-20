@@ -1,23 +1,31 @@
 @import "tailwindcss";
 
+/*
+ * Grammar taken from measured heritage sites rather than guessed. The three
+ * rules that actually carry the register: one committed saturated brand colour
+ * doing structural work, uppercase labels at 0.15em tracking, and hairlines
+ * tinted from ink at fractional alpha instead of a grey hex. Zero radius, no
+ * decorative dividers, no simulated film grain, because the real grammar is
+ * typographic and those two are the tells that read as a template.
+ */
 @theme {
-  --font-display: var(--font-literata), ui-serif, Georgia, serif;
-  --font-sans: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-prata), ui-serif, Georgia, serif;
+  --font-sans: var(--font-jost), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-plexmono), ui-monospace, "SFMono-Regular", monospace;
 
-  --color-paper: oklch(0.955 0.016 88);
-  --color-paper-2: oklch(0.918 0.016 88);
-  --color-ink: oklch(0.198 0.017 42);
-  --color-ink-2: oklch(0.325 0.018 42);
-  --color-mute: oklch(0.475 0.024 52);
-  --color-line: oklch(0.855 0.018 85);
-  --color-line-2: oklch(0.77 0.022 82);
-  --color-vermilion: oklch(0.455 0.168 28);
-  --color-vermilion-fg: oklch(0.97 0.01 88);
-  --color-brass: oklch(0.6 0.095 72);
-  --color-night: oklch(0.175 0.014 42);
-  --color-night-2: oklch(0.24 0.016 42);
-  --color-cream: oklch(0.925 0.02 86);
+  --color-paper: #f4f1ec;
+  --color-paper-2: #e9e4db;
+  --color-ink: #24211c;
+  --color-ink-2: #4b453c;
+  --color-mute: #6d675d;
+  --color-line: rgba(36, 33, 28, 0.14);
+  --color-line-2: rgba(36, 33, 28, 0.26);
+  --color-oxblood: #8e1812;
+  --color-oxblood-fg: #f4f1ec;
+  --color-brass: #7c6923;
+  --color-night: #24211c;
+  --color-night-2: #322d26;
+  --color-cream: #efeae0;
 }
 
 html,
@@ -25,20 +33,45 @@ body {
   background: var(--color-paper);
   color: var(--color-ink);
   font-family: var(--font-sans);
+  font-weight: 300;
   font-synthesis-weight: none;
 }
 
 ::selection {
-  background: var(--color-ink);
+  background: var(--color-oxblood);
   color: var(--color-paper);
 }
 
-/* A measurement is never set in the interface face. Numbers carry their own
-   type so a reader can tell a reading from a sentence at a glance. */
+/* A measurement is never set in the interface face. */
 .measured {
   font-family: var(--font-mono);
   font-variant-numeric: tabular-nums;
   letter-spacing: -0.01em;
+}
+
+/* The single most repeated declaration across the houses studied. */
+.ledger-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  line-height: 1.4;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--color-mute);
+}
+
+.ledger-label-brand {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  line-height: 1.4;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--color-oxblood);
+}
+
+/* Product and interior plates sit under a light scrim rather than a filter
+   stack, which is what the heritage sites actually do. */
+.scrim {
+  background-image: linear-gradient(to bottom, rgba(36, 33, 28, 0), rgba(36, 33, 28, 0.4));
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -52,6 +85,6 @@ body {
 }
 
 :focus-visible {
-  outline: 2px solid var(--color-vermilion);
+  outline: 2px solid var(--color-oxblood);
   outline-offset: 3px;
 }
