@@ -26,7 +26,7 @@ const mono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "FRAME — оправа по параметрам головы",
+  title: "FRAME оправа по параметрам головы",
   description:
     "Живая съёмка, 3D-мерки лица и реальные оптики рядом Без стоковых лиц и выдуманных магазинов",
 };

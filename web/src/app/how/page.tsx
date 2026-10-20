@@ -20,12 +20,12 @@ export default function HowPage() {
             радужку По ним оцениваем межзрачковое расстояние и ширину лица в миллиметрах
           </li>
           <li>
-            <strong className="text-ink">Оправа</strong> На лице — 3D-оправа из открытого демо Jeeliz FaceFilter
+            <strong className="text-ink">Оправа</strong> На лице 3D-оправа из открытого демо Jeeliz FaceFilter
             (Apache 2.0): оправа и линзы, не мультяшный силуэт и не коммерческая база GlassesDB Размер
             подгоняется под ваш IPD Наличие конкретной модели в салоне уточняйте на месте
           </li>
           <li>
-            <strong className="text-ink">Оптики</strong> Ближайшие салоны — из каталога 2GIS/ODOS по GPS Если
+            <strong className="text-ink">Оптики</strong> Ближайшие салоны взяты из каталога 2GIS/ODOS по GPS Если
             геолокацию не дали, выберите город сами: чужой город подставлять не будем
           </li>
         </ol>

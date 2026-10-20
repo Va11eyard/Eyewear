@@ -390,7 +390,7 @@ function CityField({
   onCity: (id: string) => void;
 }) {
   if (geo === "gps") {
-    return <p className="text-sm text-mute">Оптики рядом — по вашей геолокации</p>;
+    return <p className="text-sm text-mute">Оптики рядом по вашей геолокации</p>;
   }
   if (geo === "seek") {
     return <p className="text-sm text-mute">Спрашиваем геолокацию, чтобы найти салоны рядом</p>;
@@ -403,7 +403,7 @@ function CityField({
         value={cityId}
         onChange={(e) => onCity(e.target.value)}
       >
-        <option value="">Выберите город — Астану сами не подставляем</option>
+        <option value="">Выберите город, Астану сами не подставляем</option>
         {KZ_CITIES.map((c) => (
           <option key={c.id} value={c.id}>
             {c.name}
