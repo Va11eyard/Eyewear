@@ -8,3 +8,5 @@ coverage.out
 dist/
 backend/coverage.out
 web/coverage/
+.superpowers/
+web/out/
