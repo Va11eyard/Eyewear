@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { buildGlassesRig, type RigFrame } from "@/lib/glasses-rig";
+import type { RigFrame } from "@/lib/glasses-rig";
 import { renderProductShot } from "@/lib/product-render";
 
 const HDRI = "/models/hdri/studio_small_03.hdr";
