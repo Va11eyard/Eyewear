@@ -1,11 +1,9 @@
 import * as THREE from "three";
 import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
-import { coverPoint, glassesPose, type Point } from "@/lib/landmarks";
+import { type Point } from "@/lib/landmarks";
 import { type RigFrame } from "@/lib/glasses-rig";
 import { instantiateGlasses } from "@/lib/try-on-model";
-import { pxPerMm } from "@/lib/try-on-math";
-
-type View = { w: number; h: number; vw: number; vh: number };
+import { computeGlassesTransform, type View } from "@/lib/try-on-math";
 
 export class TryOnEngine {
   private renderer: THREE.WebGLRenderer;
@@ -90,24 +88,20 @@ export class TryOnEngine {
     if (!this.glasses || !this.frame) {
       return;
     }
-    const pose = glassesPose(this.lastPoints, { ...this.frame, ipdMm: this.lastIpd });
-    if (!pose) {
+    const t = computeGlassesTransform(this.lastPoints, this.frame, this.lastView, this.lastIpd);
+    if (!t) {
       this.glasses.visible = false;
       this.renderer.render(this.scene, this.camera);
       return;
     }
-    const view = this.lastView;
-    const placed = coverPoint(pose.cx, pose.cy, view.w, view.h, view.vw, view.vh);
-    const frontPx = pose.width * placed.scale * view.vw;
-    const scale = pxPerMm(frontPx, this.frame.lensWidthMm, this.frame.bridgeMm);
-    this.glasses.visible = scale > 0;
-    this.glasses.position.set(placed.x, placed.y, 0);
+    this.glasses.visible = true;
+    this.glasses.position.set(t.x, t.y, 0);
     this.glasses.rotation.set(
-      THREE.MathUtils.degToRad(pose.rotateX),
-      THREE.MathUtils.degToRad(-pose.rotateY),
-      THREE.MathUtils.degToRad(pose.rotate),
+      THREE.MathUtils.degToRad(t.rotateX),
+      THREE.MathUtils.degToRad(t.rotateY),
+      THREE.MathUtils.degToRad(t.rotate),
     );
-    this.glasses.scale.set(scale, -scale, scale);
+    this.glasses.scale.set(t.scale, -t.scale, t.scale);
     this.renderer.render(this.scene, this.camera);
   }
 }
