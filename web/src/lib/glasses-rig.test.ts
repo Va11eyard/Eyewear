@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { buildGlassesRig, eyeCenterX, lensHeightMm, rimWidthMm } from "./glasses-rig";
+import { buildGlassesRig } from "./glasses-rig";
+import { eyeCenterX, lensHeightMm, rimWidthMm } from "./frame-shapes";
 
 describe("glasses geometry", () => {
   it("uses factory eye size as the lens opening, not the outer rim", () => {
@@ -61,5 +62,29 @@ describe("glasses geometry", () => {
     expect(cat.children.length).toBeGreaterThan(5);
     expect(square.children.length).toBeGreaterThan(5);
     expect(lensHeightMm("oval", 50)).toBeLessThan(lensHeightMm("square", 50));
+  });
+
+  it("builds every shape family the catalogue can name", () => {
+    for (const shape of ["round", "panto", "rect", "square", "cat", "browline", "aviator"]) {
+      const group = buildGlassesRig({
+        shape,
+        color: "black",
+        material: shape === "aviator" ? "metal" : "acetate",
+        lensWidthMm: 52,
+        bridgeMm: 18,
+        templeMm: 145,
+      });
+      expect(group.children.length, shape).toBeGreaterThanOrEqual(6);
+    }
+  });
+
+  it("gives browlines an extra upper bar", () => {
+    const withBar = buildGlassesRig({
+      shape: "browline", color: "black", material: "combo", lensWidthMm: 53, bridgeMm: 18, templeMm: 145,
+    });
+    const plain = buildGlassesRig({
+      shape: "rect", color: "black", material: "combo", lensWidthMm: 53, bridgeMm: 18, templeMm: 145,
+    });
+    expect(withBar.children.length).toBe(plain.children.length + 2);
   });
 });

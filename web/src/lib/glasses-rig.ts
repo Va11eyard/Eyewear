@@ -1,4 +1,12 @@
 import * as THREE from "three";
+import {
+  depthMm,
+  eyeCenterX,
+  lensHeightMm,
+  lensProfile,
+  rimProfile,
+  rimWidthMm,
+} from "@/lib/frame-shapes";
 
 export type RigFrame = {
   shape: string;
@@ -11,32 +19,7 @@ export type RigFrame = {
   colors?: string[];
 };
 
-export function lensHeightMm(shape: string, lensWidthMm: number): number {
-  if (shape === "round") {
-    return lensWidthMm * 0.94;
-  }
-  if (shape === "oval") {
-    return lensWidthMm * 0.62;
-  }
-  if (shape === "square") {
-    return lensWidthMm * 0.9;
-  }
-  if (shape === "cat") {
-    return lensWidthMm * 0.68;
-  }
-  return lensWidthMm * 0.7;
-}
-
-export function rimWidthMm(material: string): number {
-  return material === "metal" ? 1.7 : 5.2;
-}
-
-export function eyeCenterX(lensWidthMm: number, bridgeMm: number): number {
-  return lensWidthMm / 2 + bridgeMm / 2;
-}
-
 export function buildGlassesRig(frame: RigFrame): THREE.Group {
-  const group = new THREE.Group();
   const metal = frame.material === "metal";
   const rim = rimMaterial(frame);
   const glass = glassMaterial();
@@ -44,17 +27,21 @@ export function buildGlassesRig(frame: RigFrame): THREE.Group {
   const w = frame.lensWidthMm;
   const h = lensHeightMm(frame.shape, w);
   const rimW = rimWidthMm(frame.material);
-  const depth = metal ? 2.1 : 5.4;
+  const depth = depthMm(frame.material);
   const cx = eyeCenterX(w, frame.bridgeMm);
+  const group = new THREE.Group();
   addEye(group, -cx, w, h, rimW, depth, frame.shape, rim, glass, true);
   addEye(group, cx, w, h, rimW, depth, frame.shape, rim, glass, false);
   addBridge(group, frame.bridgeMm, h, depth, metal, rim);
+  if (frame.shape === "browline") {
+    addBrowBar(group, cx, w, h, rimW, depth, frame, rim);
+  }
   if (metal) {
     addPads(group, cx, w, h, hardware);
   }
   addTemple(group, -cx - w / 2 - rimW * 0.2, -1, frame.templeMm, metal, rim, hardware);
   addTemple(group, cx + w / 2 + rimW * 0.2, 1, frame.templeMm, metal, rim, hardware);
-  wrapFront(group, 220);
+  wrapFront(group, metal ? 260 : 220);
   group.rotation.x = 0.06;
   return group;
 }
@@ -71,14 +58,37 @@ function addEye(
   glass: THREE.Material,
   left: boolean,
 ) {
-  const profile = rimProfile(shape, w, h, rimW, left);
-  const rimMesh = new THREE.Mesh(extrude(profile, depth), rim);
+  const rimMesh = new THREE.Mesh(extrude(rimProfile(shape, w, h, rimW, left), depth), rim);
   rimMesh.position.set(x, 0, -depth * 0.35);
   rimMesh.userData.front = true;
-  const lens = new THREE.Mesh(extrude(lensShape(shape, w * 0.96, h * 0.94, left, false), 1.1), glass);
+  const lens = new THREE.Mesh(extrude(lensProfile(shape, w * 0.96, h * 0.94, left), 1.1), glass);
   lens.position.set(x, 0, 0.35);
   lens.userData.front = true;
   group.add(rimMesh, lens);
+}
+
+/** Browline reads as a heavy upper bar with a thin lower rim, so the bar is its own mesh. */
+function addBrowBar(
+  group: THREE.Group,
+  cx: number,
+  w: number,
+  h: number,
+  rimW: number,
+  depth: number,
+  frame: RigFrame,
+  rim: THREE.Material,
+) {
+  const bar = new THREE.Mesh(
+    extrude(rimProfile(frame.shape, w, h, rimW, true), depth * 1.5),
+    rim,
+  );
+  bar.position.set(-cx, 0, -depth * 0.5);
+  bar.scale.y = 0.42;
+  bar.position.y = h * 0.36;
+  bar.userData.front = true;
+  const mirror = bar.clone();
+  mirror.position.x = cx;
+  group.add(bar, mirror);
 }
 
 function addBridge(
@@ -166,13 +176,6 @@ function wrapFront(group: THREE.Group, radius: number) {
   });
 }
 
-function rimProfile(shape: string, w: number, h: number, rimW: number, left: boolean): THREE.Shape {
-  const outer = lensShape(shape, w + rimW * 2, h + rimW * 1.7, left, false);
-  const inner = lensShape(shape, w, h, left, true);
-  outer.holes.push(inner);
-  return outer;
-}
-
 function extrude(shape: THREE.Shape, depth: number): THREE.ExtrudeGeometry {
   return new THREE.ExtrudeGeometry(shape, {
     depth,
@@ -182,72 +185,6 @@ function extrude(shape: THREE.Shape, depth: number): THREE.ExtrudeGeometry {
     bevelSegments: 3,
     curveSegments: 36,
   });
-}
-
-function lensShape(shape: string, w: number, h: number, left: boolean, hole: boolean): THREE.Shape {
-  if (shape === "cat") {
-    return catShape(w, h, left, hole);
-  }
-  if (shape === "rect" || shape === "square") {
-    return roundedRect(w, h, shape === "square" ? 6.5 : 3.8, hole);
-  }
-  const s = new THREE.Shape();
-  s.absellipse(0, 0, w / 2, h / 2, 0, Math.PI * 2, hole, 0);
-  return s;
-}
-
-function roundedRect(w: number, h: number, rad: number, hole: boolean): THREE.Shape {
-  const hw = w / 2;
-  const hh = h / 2;
-  const r = Math.min(rad, hw * 0.45, hh * 0.45);
-  const s = new THREE.Shape();
-  if (hole) {
-    s.moveTo(-hw + r, hh);
-    s.lineTo(hw - r, hh);
-    s.quadraticCurveTo(hw, hh, hw, hh - r);
-    s.lineTo(hw, -hh + r);
-    s.quadraticCurveTo(hw, -hh, hw - r, -hh);
-    s.lineTo(-hw + r, -hh);
-    s.quadraticCurveTo(-hw, -hh, -hw, -hh + r);
-    s.lineTo(-hw, hh - r);
-    s.quadraticCurveTo(-hw, hh, -hw + r, hh);
-    return s;
-  }
-  s.moveTo(-hw + r, -hh);
-  s.lineTo(hw - r, -hh);
-  s.quadraticCurveTo(hw, -hh, hw, -hh + r);
-  s.lineTo(hw, hh - r);
-  s.quadraticCurveTo(hw, hh, hw - r, hh);
-  s.lineTo(-hw + r, hh);
-  s.quadraticCurveTo(-hw, hh, -hw, hh - r);
-  s.lineTo(-hw, -hh + r);
-  s.quadraticCurveTo(-hw, -hh, -hw + r, -hh);
-  return s;
-}
-
-function catShape(w: number, h: number, left: boolean, hole: boolean): THREE.Shape {
-  const s = new THREE.Shape();
-  const k = left ? 1 : -1;
-  const pts: [number, number][] = [
-    [-w / 2, -h * 0.05],
-    [-w / 2, -h / 2],
-    [-w * 0.08, -h / 2],
-    [0, -h * 0.38],
-    [w * 0.42, -h / 2],
-    [w / 2, -h * 0.12],
-    [w / 2, h * 0.22],
-    [w * 0.18, h / 2],
-    [-w * 0.32, h / 2],
-    [-w / 2, -h * 0.05],
-  ].map(([x, y]) => [x * k, y]);
-  if (hole) {
-    pts.reverse();
-  }
-  s.moveTo(pts[0][0], pts[0][1]);
-  s.bezierCurveTo(pts[1][0], pts[1][1], pts[2][0], pts[2][1], pts[3][0], pts[3][1]);
-  s.bezierCurveTo(pts[4][0], pts[4][1], pts[5][0], pts[5][1], pts[6][0], pts[6][1]);
-  s.bezierCurveTo(pts[7][0], pts[7][1], pts[8][0], pts[8][1], pts[9][0], pts[9][1]);
-  return s;
 }
 
 function rimMaterial(frame: RigFrame): THREE.MeshPhysicalMaterial {
@@ -323,14 +260,20 @@ function acetateMap(color: string): THREE.CanvasTexture | null {
   return tex;
 }
 
+const RIM_COLORS: Record<string, number> = {
+  black: 0x161310,
+  gold: 0xc9a66b,
+  silver: 0xd0cbc3,
+  gunmetal: 0x4a5058,
+  tortoise: 0x7a4a28,
+  horn: 0x4a3428,
+  burgundy: 0x6b1c28,
+  grey: 0x6e6b67,
+  clear: 0xe0dacc,
+  crystal: 0xb8b2a8,
+  olive: 0x5a5c38,
+};
+
 function rimColor(color: string): number {
-  const map: Record<string, number> = {
-    black: 0x161310,
-    gold: 0xc9a66b,
-    grey: 0x6e6b67,
-    tortoise: 0x7a4a28,
-    horn: 0x4a3428,
-    silver: 0xd0cbc3,
-  };
-  return map[color] ?? 0x161310;
+  return RIM_COLORS[color] ?? 0x161310;
 }
