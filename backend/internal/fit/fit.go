@@ -40,19 +40,23 @@ type Head struct {
 	FaceWidthMm  float64 `json:"faceWidthMm"`
 	FaceHeightMm float64 `json:"faceHeightMm"`
 	ShapeHint    string  `json:"shapeHint"`
+	ShapeAgreed  int     `json:"shapeAgreed"`
 	SizeHint     string  `json:"sizeHint"`
 }
 
 type Frame struct {
-	SKU         string  `json:"sku"`
-	Name        string  `json:"name"`
-	Brand       string  `json:"brand"`
-	Shape       string  `json:"shape"`
-	Material    string  `json:"material"`
-	Color       string  `json:"color"`
-	LensWidthMm float64 `json:"lensWidthMm"`
-	BridgeMm    float64 `json:"bridgeMm"`
+	SKU         string   `json:"sku"`
+	Name        string   `json:"name"`
+	Brand       string   `json:"brand"`
+	Shape       string   `json:"shape"`
+	Material    string   `json:"material"`
+	Color       string   `json:"color"`
+	ColorRu     string   `json:"colorRu"`
+	LensWidthMm float64  `json:"lensWidthMm"`
+	BridgeMm    float64  `json:"bridgeMm"`
 	TempleMm    float64  `json:"templeMm"`
+	WeightG     float64  `json:"weightG"`
+	PriceTenge  float64  `json:"priceTenge"`
 	Model       string   `json:"model"`
 	Colors      []string `json:"colors"`
 }
@@ -98,7 +102,7 @@ func Measure(points []Landmark) (Head, error) {
 	if ipdN < 0.02 {
 		return Head{}, ErrNoFace
 	}
-	mmPer := scaleMm(idx, ipdN)
+	mmPer, fromIris := scaleMm(idx, ipdN)
 	faceW := faceWidthNorm(idx, ipdN)
 	faceH := faceHeightNorm(idx, ipdN)
 	head := Head{
@@ -106,12 +110,12 @@ func Measure(points []Landmark) (Head, error) {
 		FaceWidthMm:  round1(faceW * mmPer),
 		FaceHeightMm: round1(faceH * mmPer),
 	}
-	head.ShapeHint = classifyFace(idx, head.FaceWidthMm, head.FaceHeightMm)
+	head.ShapeHint, head.ShapeAgreed = ShapeCall(idx, head.FaceWidthMm, head.FaceHeightMm, fromIris)
 	head.SizeHint = sizeFromWidth(head.FaceWidthMm)
 	return head, nil
 }
 
-func scaleMm(idx map[int]Landmark, ipdN float64) float64 {
+func scaleMm(idx map[int]Landmark, ipdN float64) (float64, bool) {
 	mmPer := meanAdultIPDMm / ipdN
 	center, okC := idx[idxLeftIris]
 	rim, okR := idx[idxLeftIrisRim]
@@ -121,11 +125,11 @@ func scaleMm(idx map[int]Landmark, ipdN float64) float64 {
 			candidate := irisDiameterMm / diameter
 			est := ipdN * candidate
 			if est >= 48 && est <= 78 {
-				return candidate
+				return candidate, true
 			}
 		}
 	}
-	return mmPer
+	return mmPer, false
 }
 
 func faceWidthNorm(idx map[int]Landmark, ipdN float64) float64 {

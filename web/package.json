@@ -8,6 +8,7 @@
     "start": "next start --port 3200",
     "lint": "eslint . --max-warnings 0",
     "typecheck": "tsc --noEmit",
+    "sync:frames": "node scripts/sync-frames.mjs",
     "test": "vitest run --coverage"
   },
   "dependencies": {

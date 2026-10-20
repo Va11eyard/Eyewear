@@ -4,9 +4,9 @@ import (
 	"bytes"
 	"encoding/base64"
 	"encoding/json"
+	"github.com/frame/eyewear/internal/fit"
 	"net/http"
 	"net/http/httptest"
-	"strings"
 	"testing"
 
 	"github.com/frame/eyewear/internal/optics"
@@ -67,7 +67,7 @@ func TestFit_HappyPathReturnsHeadAndMatches(t *testing.T) {
 	if out.Matches[0].Breakdown.Size == 0 {
 		t.Fatal("expected breakdown")
 	}
-	if !hasTryOnMesh(out.Matches[0].Frame.Model) || len(out.Matches[0].Frame.Colors) == 0 {
+	if !fit.HasTryOnMesh(out.Matches[0].Frame.Model) || len(out.Matches[0].Frame.Colors) == 0 {
 		t.Fatal("expected try-on mesh and colors")
 	}
 }
@@ -175,10 +175,6 @@ func TestOptionsAndHealth(t *testing.T) {
 	if hr.Code != http.StatusOK {
 		t.Fatalf("health %d", hr.Code)
 	}
-}
-
-func hasTryOnMesh(model string) bool {
-	return strings.HasPrefix(model, "jeeliz:") || strings.HasSuffix(model, ".glb")
 }
 
 func TestFit_EmptyImage(t *testing.T) {

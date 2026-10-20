@@ -1,7 +1,7 @@
 package catalog
 
 import (
-	"strings"
+	"github.com/frame/eyewear/internal/fit"
 	"testing"
 )
 
@@ -15,7 +15,7 @@ func TestFrames_HaveRealGeometry(t *testing.T) {
 		if f.SKU == "" || f.LensWidthMm < 40 || f.BridgeMm < 10 || f.TempleMm < 120 {
 			t.Fatalf("invalid geometry %#v", f)
 		}
-		if !hasTryOnMesh(f.Model) || len(f.Colors) < 3 {
+		if !fit.HasTryOnMesh(f.Model) || len(f.Colors) < 3 {
 			t.Fatalf("try-on mesh and tints required %#v", f)
 		}
 		if _, dup := seen[f.SKU]; dup {
@@ -23,8 +23,4 @@ func TestFrames_HaveRealGeometry(t *testing.T) {
 		}
 		seen[f.SKU] = struct{}{}
 	}
-}
-
-func hasTryOnMesh(model string) bool {
-	return strings.HasPrefix(model, "jeeliz:") || strings.HasSuffix(model, ".glb")
 }

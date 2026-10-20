@@ -5,6 +5,7 @@ export type Head = {
   faceWidthMm: number;
   faceHeightMm: number;
   shapeHint: string;
+  shapeAgreed: number;
   sizeHint: string;
 };
 
@@ -46,12 +47,12 @@ const irisDiameterMm = 11.7;
 export const MaxImageBytes = 8 << 20;
 
 const bestFrames: Record<string, string[]> = {
-  round: ["rect", "square", "cat"],
-  square: ["round", "oval", "cat"],
-  oval: ["rect", "cat", "square", "round", "oval"],
-  heart: ["oval", "round", "cat"],
-  diamond: ["oval", "cat", "round"],
-  oblong: ["round", "oval", "cat"],
+  round: ["rect", "square", "browline", "cat"],
+  square: ["round", "panto", "aviator", "cat"],
+  oval: ["rect", "cat", "panto", "browline", "round", "aviator", "square"],
+  heart: ["round", "panto", "cat", "aviator"],
+  diamond: ["cat", "browline", "round", "panto"],
+  oblong: ["panto", "round", "aviator", "square"],
 };
 
 function byIndex(points: Landmark[]): Map<number, Landmark> {
@@ -152,7 +153,7 @@ export function pairShapeScore(face: string, frame: string): number {
   return 46;
 }
 
-function scaleMm(idx: Map<number, Landmark>, ipdN: number): number {
+function scaleMm(idx: Map<number, Landmark>, ipdN: number): { mmPer: number; fromIris: boolean } {
   const mmPer = meanAdultIPDMm / ipdN;
   const center = idx.get(idxLeftIris);
   const rim = idx.get(idxLeftIrisRim);
@@ -162,11 +163,40 @@ function scaleMm(idx: Map<number, Landmark>, ipdN: number): number {
       const candidate = irisDiameterMm / diameter;
       const est = ipdN * candidate;
       if (est >= 48 && est <= 78) {
-        return candidate;
+        return { mmPer: candidate, fromIris: true };
       }
     }
   }
-  return mmPer;
+  return { mmPer, fromIris: false };
+}
+
+/**
+ * Agreement counts the cues that were present and did not contradict each
+ * other. It is not a probability, and the UI must not render it as one.
+ */
+export function shapeCall(
+  idx: Map<number, Landmark>,
+  widthMm: number,
+  heightMm: number,
+  fromIris: boolean,
+): { shape: string; agreed: number } {
+  const ratio = shapeFromRatio(widthMm, heightMm);
+  const [fore, okF] = span(idx, idxForeheadL, idxForeheadR);
+  const [jaw, okJ] = span(idx, idxJawL, idxJawR);
+  const [cheek, okC] = span(idx, idxLeftCheek, idxRightCheek);
+  let shape = ratio;
+  let agreed = 0;
+  if (okF && okJ && okC && cheek > 0) {
+    shape = fromProportions(fore / cheek, jaw / cheek, widthMm, heightMm);
+    agreed += 1;
+    if (shape === ratio) {
+      agreed += 1;
+    }
+  }
+  if (okF) agreed += 1;
+  if (okJ) agreed += 1;
+  if (fromIris) agreed += 1;
+  return { shape, agreed: Math.min(5, agreed) };
 }
 
 function faceWidthNorm(idx: Map<number, Landmark>, ipdN: number): number {
@@ -201,7 +231,7 @@ export function measure(points: Landmark[]): Head {
   if (ipdN < 0.02) {
     throw new Error("no_face");
   }
-  const mmPer = scaleMm(idx, ipdN);
+  const { mmPer, fromIris } = scaleMm(idx, ipdN);
   const faceW = faceWidthNorm(idx, ipdN);
   const faceH = faceHeightNorm(idx, ipdN);
   const head: Head = {
@@ -209,9 +239,12 @@ export function measure(points: Landmark[]): Head {
     faceWidthMm: round1(faceW * mmPer),
     faceHeightMm: round1(faceH * mmPer),
     shapeHint: "",
+    shapeAgreed: 0,
     sizeHint: "",
   };
-  head.shapeHint = classifyFace(idx, head.faceWidthMm, head.faceHeightMm);
+  const call = shapeCall(idx, head.faceWidthMm, head.faceHeightMm, fromIris);
+  head.shapeHint = call.shape;
+  head.shapeAgreed = call.agreed;
   head.sizeHint = sizeFromWidth(head.faceWidthMm);
   return head;
 }

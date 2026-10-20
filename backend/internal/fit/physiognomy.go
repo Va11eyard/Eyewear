@@ -18,6 +18,36 @@ func classifyFace(idx map[int]Landmark, widthMm, heightMm float64) string {
 	return fromProportions(fore/cheek, jaw/cheek, widthMm, heightMm)
 }
 
+// ShapeCall agrees the independent cues that reached the same class. The count
+// is not a probability; it only says how much of the mesh backed the verdict.
+func ShapeCall(idx map[int]Landmark, widthMm, heightMm float64, fromIris bool) (string, int) {
+	shape := shapeFromRatio(widthMm, heightMm)
+	agreed := 0
+	fore, okF := span(idx, idxForeheadL, idxForeheadR)
+	jaw, okJ := span(idx, idxJawL, idxJawR)
+	cheek, okC := span(idx, idxLeftCheek, idxRightCheek)
+	if okF && okJ && okC && cheek > 0 {
+		shape = fromProportions(fore/cheek, jaw/cheek, widthMm, heightMm)
+		agreed++
+		if shape == shapeFromRatio(widthMm, heightMm) {
+			agreed++
+		}
+	}
+	if okF {
+		agreed++
+	}
+	if okJ {
+		agreed++
+	}
+	if fromIris {
+		agreed++
+	}
+	if agreed > 5 {
+		agreed = 5
+	}
+	return shape, agreed
+}
+
 func span(idx map[int]Landmark, a, b int) (float64, bool) {
 	la, okA := idx[a]
 	lb, okB := idx[b]
@@ -70,10 +100,10 @@ func pairShapeScore(face, frame string) float64 {
 }
 
 var bestFrames = map[string][]string{
-	"round":   {"rect", "square", "cat"},
-	"square":  {"round", "oval", "cat"},
-	"oval":    {"rect", "cat", "square", "round", "oval"},
-	"heart":   {"oval", "round", "cat"},
-	"diamond": {"oval", "cat", "round"},
-	"oblong":  {"round", "oval", "cat"},
+	"round":   {"rect", "square", "browline", "cat"},
+	"square":  {"round", "panto", "aviator", "cat"},
+	"oval":    {"rect", "cat", "panto", "browline", "round", "aviator", "square"},
+	"heart":   {"round", "panto", "cat", "aviator"},
+	"diamond": {"cat", "browline", "round", "panto"},
+	"oblong":  {"panto", "round", "aviator", "square"},
 }
