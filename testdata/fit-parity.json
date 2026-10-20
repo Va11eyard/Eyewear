@@ -276,13 +276,13 @@
       },
       "wantSKUs": [
         "FR-AVIATOR-61-GOLD",
-        "FR-RECT-58-GUNMETAL",
-        "FR-BROWLINE-57-BLACK"
+        "FR-ROUND-58-GUNMETAL",
+        "FR-RECT-58-GUNMETAL"
       ],
       "wantDeltas": [
         0,
-        -4,
-        -5
+        -2,
+        -4
       ]
     },
     {

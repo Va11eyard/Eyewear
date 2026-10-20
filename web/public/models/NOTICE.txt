@@ -3,6 +3,20 @@ sunglasses-khronos.glb
 Modeled from a physical pair of sunglasses for Khronos 3D Commerce.
 License: Creative Commons Attribution 4.0 International
 https://github.com/KhronosGroup/glTF-Sample-Assets/tree/main/Models/SunglassesKhronos
+Kept as a loader test fixture only. It is not offered in the catalogue because
+the Khronos and 3D Commerce marks are baked into the textures.
+
+polyhaven/round-spectacles.glb
+Round Spectacles by Sean Buckley
+License: CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+https://polyhaven.com/a/round_spectacles
+Fetched 2026-10-20 from the published 1k glTF export and packed into one GLB
+with @gltf-transform/cli cp. Geometry is otherwise byte-faithful to upstream:
+7822 uploaded vertices, two materials, frame and glass kept separate, front
+width 157.8 mm as authored in metres upstream. The metre to millimetre scale is
+applied at load time by fitting the model's measured front width to the
+catalogue size code, so the shipped file can be re-downloaded and compared
+against upstream.
 
 jeeliz/glassesFrames.json
 jeeliz/glassesLenses.json
@@ -12,3 +26,8 @@ Copyright Jeeliz / WebAR.rocks contributors
 License: Apache License 2.0
 https://github.com/jeeliz/jeelizFaceFilter
 These meshes are the open FaceFilter VTO sample (not Jeeliz GlassesDB / commercial widget).
+
+No third-party branded eyewear is shipped or imitated. Ray-Ban, Prada, Oakley,
+Moscot and similar designs exist as CC-BY uploads on model marketplaces; copying
+a protected silhouette and naming it is trademark exposure, so every other
+catalogue model is generated from its own size code by src/lib/glasses-rig.ts.

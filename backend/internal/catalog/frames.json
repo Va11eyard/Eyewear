@@ -1161,6 +1161,28 @@
         "frontZ": 0,
         "hingeX": 1
       }
+    },
+    {
+      "sku": "FR-ROUND-58-GUNMETAL",
+      "name": "Круг 58",
+      "shape": "round",
+      "material": "metal",
+      "color": "gunmetal",
+      "colorRu": "Графит, сине-серый",
+      "lensWidthMm": 58,
+      "bridgeMm": 18,
+      "templeMm": 145,
+      "weightG": 22,
+      "priceTenge": 66000,
+      "mesh": "glb:polyhaven-round",
+      "colors": [
+        "gunmetal"
+      ],
+      "anchor": {
+        "pupilY": 0,
+        "frontZ": 0,
+        "hingeX": 1
+      }
     }
   ]
 }

@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { buildGlassesRig, type RigFrame } from "@/lib/glasses-rig";
+import { resolveMesh } from "@/lib/mesh-registry";
 import { publicAsset } from "@/lib/public-asset";
 
 const loader = new GLTFLoader();
@@ -187,7 +188,8 @@ async function instantiateJeelizOptical(frame: RigFrame): Promise<THREE.Group> {
 }
 
 async function instantiateGltf(frame: RigFrame): Promise<THREE.Group> {
-  const proto = await loadPrototype(publicAsset(frame.model ?? ""));
+  const entry = resolveMesh(frame.model ?? "");
+  const proto = await loadPrototype(publicAsset(entry.url ?? ""));
   const inst = proto.clone(true);
   inst.traverse((obj) => {
     const mesh = obj as THREE.Mesh;
@@ -198,7 +200,9 @@ async function instantiateGltf(frame: RigFrame): Promise<THREE.Group> {
   });
   fitModelToFront(inst, frame.lensWidthMm, frame.bridgeMm);
   inst.rotation.x = 0.18;
-  applyFrameTint(inst, frame.color, frame.material);
+  if (entry.tintable) {
+    applyFrameTint(inst, frame.color, frame.material);
+  }
   return wrapForPose(inst, false);
 }
 
