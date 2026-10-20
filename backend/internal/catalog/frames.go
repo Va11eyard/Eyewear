@@ -4,6 +4,7 @@ import (
 	_ "embed"
 	"encoding/json"
 	"fmt"
+	"strings"
 
 	"github.com/frame/eyewear/internal/fit"
 )
@@ -72,6 +73,16 @@ func Load(b []byte) ([]fit.Frame, error) {
 		}
 		if r.ColorRu == "" || len(r.Colors) == 0 {
 			return nil, fmt.Errorf("%s: colour must carry a name and options", r.SKU)
+		}
+		// A scanned or authored real frame carries its own material, so offering
+		// tints for it would sell something that does not exist. Generated frames
+		// are the opposite: they must offer a real choice.
+		if strings.HasPrefix(r.Mesh, "glb:") {
+			if len(r.Colors) != 1 {
+				return nil, fmt.Errorf("%s: %s carries its own material and must offer exactly one colour", r.SKU, r.Mesh)
+			}
+		} else if len(r.Colors) < 3 {
+			return nil, fmt.Errorf("%s: generated frame needs at least three colours", r.SKU)
 		}
 		out = append(out, fit.Frame{
 			SKU: r.SKU, Name: r.Name, Brand: "FRAME", Shape: r.Shape, Material: r.Material,

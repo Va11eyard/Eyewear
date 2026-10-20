@@ -13,7 +13,9 @@ COPY web/package.json web/package-lock.json ./
 RUN npm ci
 COPY web/ ./
 ENV NEXT_TELEMETRY_DISABLED=1
-ENV NEXT_PUBLIC_API_URL=
+# The combined image serves the browser and the Go API behind one origin, so the
+# front end calls /v1 through Caddy instead of falling back to the local maths.
+ENV NEXT_PUBLIC_API_URL=origin
 RUN npm run build
 
 FROM node:22-alpine

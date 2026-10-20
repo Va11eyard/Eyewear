@@ -9,8 +9,32 @@ afterEach(() => {
 const jpegB64 = btoa(String.fromCharCode(0xff, 0xd8, 0xff, 0xe0, 0x00));
 
 describe("apiBase", () => {
-  it("defaults to same-origin client engine", () => {
+  it("runs on-device when nothing is configured", () => {
+    expect(apiBase()).toBeNull();
+  });
+
+  it("treats origin as same-origin /v1 rather than as no API", () => {
+    vi.stubEnv("NEXT_PUBLIC_API_URL", "origin");
     expect(apiBase()).toBe("");
+  });
+
+  it("keeps an absolute base verbatim", () => {
+    vi.stubEnv("NEXT_PUBLIC_API_URL", "http://api.test");
+    expect(apiBase()).toBe("http://api.test");
+  });
+});
+
+describe("origin mode", () => {
+  it("reaches the Go API through the reverse proxy instead of the local fallback", async () => {
+    vi.stubEnv("NEXT_PUBLIC_API_URL", "origin");
+    const seen: string[] = [];
+    vi.stubGlobal("fetch", async (url: string) => {
+      seen.push(String(url));
+      return { ok: true, json: async () => ({ head: { ipdMm: 61 }, matches: [] }) };
+    });
+    const got = await postFit(jpegB64, []);
+    expect(got.head.ipdMm).toBe(61);
+    expect(seen).toEqual(["/v1/fit"]);
   });
 });
 

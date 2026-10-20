@@ -3,6 +3,7 @@ name: github-pages
 on:
   push:
     branches: [main]
+  pull_request:
   workflow_dispatch:
 
 permissions:
@@ -15,7 +16,42 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  # Nothing ships that has not passed both suites. The parity test between the
+  # Go API and the browser maths lives here, so a change on one side fails CI
+  # instead of quietly producing two products that disagree.
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "1.25"
+          cache-dependency-path: backend/go.sum
+      - name: Web lint, types and tests
+        working-directory: web
+        run: |
+          npm ci
+          npm run lint
+          npm run typecheck
+          npm test
+      - name: Static export still builds
+        working-directory: web
+        env:
+          GITHUB_PAGES: "1"
+          NEXT_PUBLIC_BASE_PATH: /frame-atelier
+        run: npm run build
+      - name: API tests with coverage
+        working-directory: backend
+        run: go test ./internal/... -cover
+
   build:
+    needs: verify
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -38,6 +74,7 @@ jobs:
 
   deploy:
     needs: build
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     environment:
       name: github-pages

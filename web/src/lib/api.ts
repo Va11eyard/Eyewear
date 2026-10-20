@@ -4,8 +4,18 @@ import { nearbyOptics, type Shop } from "@/lib/optics-local";
 
 export type { Head, Match, Shop };
 
-export function apiBase(): string {
-  return process.env.NEXT_PUBLIC_API_URL ?? "";
+/**
+ * null means compute on-device. The literal value "origin" means call the
+ * same-origin /v1 routes, which is how the combined Docker image reaches its
+ * own Go API through Caddy. An empty variable is genuinely unset, so the two
+ * cases can no longer be confused.
+ */
+export function apiBase(): string | null {
+  const v = process.env.NEXT_PUBLIC_API_URL;
+  if (!v) {
+    return null;
+  }
+  return v === "origin" ? "" : v;
 }
 
 function asLandmarks(landmarks: unknown): Landmark[] {
@@ -18,8 +28,12 @@ function asLandmarks(landmarks: unknown): Landmark[] {
   });
 }
 
-async function remoteFit(imageBase64: string, landmarks: unknown): Promise<{ head: Head; matches: Match[] }> {
-  const res = await fetch(`${apiBase()}/v1/fit`, {
+async function remoteFit(
+  imageBase64: string,
+  landmarks: unknown,
+  base: string,
+): Promise<{ head: Head; matches: Match[] }> {
+  const res = await fetch(`${base}/v1/fit`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ imageBase64, landmarks }),
@@ -32,8 +46,9 @@ async function remoteFit(imageBase64: string, landmarks: unknown): Promise<{ hea
 }
 
 export async function postFit(imageBase64: string, landmarks: unknown): Promise<{ head: Head; matches: Match[] }> {
-  if (apiBase()) {
-    return remoteFit(imageBase64, landmarks);
+  const base = apiBase();
+  if (base !== null) {
+    return remoteFit(imageBase64, landmarks, base);
   }
   const img = decodeImage(imageBase64);
   validateImage(img);
@@ -42,8 +57,9 @@ export async function postFit(imageBase64: string, landmarks: unknown): Promise<
 }
 
 export async function getOptics(lat: number, lng: number): Promise<Shop[]> {
-  if (apiBase()) {
-    const res = await fetch(`${apiBase()}/v1/optics?lat=${lat}&lng=${lng}`);
+  const base = apiBase();
+  if (base !== null) {
+    const res = await fetch(`${base}/v1/optics?lat=${lat}&lng=${lng}`);
     const body = (await res.json()) as { error?: string; shops: Shop[] };
     if (!res.ok) {
       throw new Error(body.error ?? "optics_failed");

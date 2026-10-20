@@ -1,40 +1,73 @@
 # FRAME
 
-Live camera fit for eyewear. Next.js talks to a Go API that scores real frame geometry and looks up nearby `shop=optician` nodes on OpenStreetMap.
+Живая посадка оправ по меркам с камеры. Next.js показывает кадр и 3D-оправу, Go API считает
+ту же геометрию по тем же данным, рядом лежат салоны из открытого каталога.
 
-## Stack
+## Стек
 
-- Go API (`backend/`) — tested on Go 1.25; 1.27 is the current stable if your toolchain can download it
-- Next.js 16.3.3 + React 19 (`web/`)
+- Next.js 16.3 + React 19 + Three.js, статичный экспорт на GitHub Pages (`web/`)
+- Go API на стандартной библиотеке, Go 1.25 (`backend/`)
+- MediaPipe Face Landmarker, 468 ориентиров с глубиной
+- Витрина и примерка строятся из одной геометрии: `web/src/lib/frame-shapes.ts`
 
-## Run
+## Запуск
 
-API in Docker:
-
-```
-docker compose up --build api
-```
-
-Or locally:
-
-```
-cd backend
-go run ./cmd/api
-```
-
-Terminal 2:
-
-```
+```bash
 cd web
 npm install
 npm run dev
 ```
 
-Open http://localhost:3200 — allow camera and location. There are no stock portraits and no invented shop rows.
+Открыть http://localhost:3200 и разрешить камеру. Без бэкенда всё считается в браузере.
 
-## Tests
+API отдельно, если нужен:
 
+```bash
+cd backend
+go run ./cmd/api
 ```
-cd backend && go test ./internal/... -cover
+
+## Что где лежит
+
+| | |
+|---|---|
+| `web/public/data/frames.json` | каталог оправ, единственный источник правды |
+| `web/src/lib/frame-catalog.ts` | загрузчик со схемой, отклоняет невозможные размеры |
+| `web/src/lib/fit-math.ts` | миллиметры, допуск и трек уверенности |
+| `web/src/lib/recommend.ts` | ровно три модели, разные формы, причины |
+| `web/src/lib/mesh-registry.ts` | id меша, лицензия и право на перекраску |
+| `backend/internal/parity/parity_test.go` | Go и браузер обязаны совпадать |
+| `testdata/fit-parity.json` | общий фикстур для обеих сторон |
+| `web/public/models/NOTICE.txt` | лицензия на каждый сторонний актив |
+
+## Правила, которые проверяются машиной
+
+`npm test` в `web/` гоняет тесты, `npm run lint` держит ноль предупреждений, а
+`src/lib/a11y-copy.ts` сканирует интерфейс на запрещённые глифы, похвальные
+формулировки и точки в заголовках. `go test ./internal/...` покрывает API и parity
+набор.
+
+Посадка отдаётся в миллиметрах и в согласованных ориентирах. Процентов совпадения в
+продукте нет, потому что по одному кадру с камеры их не измерить.
+
+Метрика Macro-F1 формы лица в бенчмарке остаётся прочерком: открытого размеченного
+набора из 200 лиц с лицензией и сплитом по людям не существует, а выдуманное число на
+медицински-смежном продукте хуже прочерка.
+
+## Тесты
+
+```bash
 cd web && npm test
+cd backend && go test ./internal/... -cover
 ```
+
+## Документация
+
+- `docs/deploy.md` два таргета, три режима API и что ещё не развёрнуто
+- `docs/superpowers/specs/` принятые решения и происхождение активов
+- `docs/superpowers/plans/` план фазы 1 по задачам
+
+## Границы
+
+Не медицинское изделие, не диагноз, не рецепт и не назначение линз. Стоковых портретов
+и выдуманных строк магазинов нет. Продажей оправ и оплатой не занимается.
