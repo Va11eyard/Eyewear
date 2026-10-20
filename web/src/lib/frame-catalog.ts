@@ -47,39 +47,46 @@ function num(rec: Record<string, unknown>, key: keyof typeof RANGES): number {
   return v;
 }
 
+function str(rec: Record<string, unknown>, key: string): string {
+  const v = rec[key];
+  return typeof v === "string" ? v : "";
+}
+
+function toFrame(rec: Record<string, unknown>): Frame {
+  const shape = str(rec, "shape");
+  if (!(SHAPE_FAMILIES as readonly string[]).includes(shape)) {
+    throw new Error(`frame ${str(rec, "sku")}: unknown shape ${shape}`);
+  }
+  const anchor = (rec.anchor ?? {}) as Record<string, unknown>;
+  const colors = Array.isArray(rec.colors) ? (rec.colors as string[]).map(String) : [];
+  return {
+    sku: str(rec, "sku"),
+    name: str(rec, "name"),
+    shape,
+    material: str(rec, "material"),
+    color: str(rec, "color"),
+    colorRu: str(rec, "colorRu"),
+    lensWidthMm: num(rec, "lensWidthMm"),
+    bridgeMm: num(rec, "bridgeMm"),
+    templeMm: num(rec, "templeMm"),
+    weightG: num(rec, "weightG"),
+    priceTenge: num(rec, "priceTenge"),
+    mesh: str(rec, "mesh"),
+    colors,
+    anchor: {
+      pupilY: Number(anchor.pupilY ?? 0),
+      frontZ: Number(anchor.frontZ ?? 0),
+      hingeX: Number(anchor.hingeX ?? 1),
+    },
+  };
+}
+
 export function loadFrames(raw: unknown): Frame[] {
   const recs = (raw as { frames?: unknown }).frames;
   if (!Array.isArray(recs)) {
     throw new Error("frames.json: frames must be an array");
   }
-  return recs.map((entry) => {
-    const rec = entry as Record<string, unknown>;
-    const shape = String(rec.shape ?? "");
-    if (!(SHAPE_FAMILIES as readonly string[]).includes(shape)) {
-      throw new Error(`frame ${String(rec.sku)}: unknown shape ${shape}`);
-    }
-    const anchor = (rec.anchor ?? {}) as Record<string, unknown>;
-    return {
-      sku: String(rec.sku ?? ""),
-      name: String(rec.name ?? ""),
-      shape,
-      material: String(rec.material ?? ""),
-      color: String(rec.color ?? ""),
-      colorRu: String(rec.colorRu ?? ""),
-      lensWidthMm: num(rec, "lensWidthMm"),
-      bridgeMm: num(rec, "bridgeMm"),
-      templeMm: num(rec, "templeMm"),
-      weightG: num(rec, "weightG"),
-      priceTenge: num(rec, "priceTenge"),
-      mesh: String(rec.mesh ?? ""),
-      colors: Array.isArray(rec.colors) ? (rec.colors as string[]).map(String) : [],
-      anchor: {
-        pupilY: Number(anchor.pupilY ?? 0),
-        frontZ: Number(anchor.frontZ ?? 0),
-        hingeX: Number(anchor.hingeX ?? 1),
-      },
-    } satisfies Frame;
-  });
+  return recs.map((entry) => toFrame(entry as Record<string, unknown>));
 }
 
 export function frameById(frames: Frame[], sku: string): Frame | undefined {

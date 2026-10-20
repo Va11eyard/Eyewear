@@ -707,7 +707,7 @@ describe("ui primitives", () => {
 
 - [ ] **Step 3: Replace tokens and fonts**
 
-In `globals.css` extend `@theme` with the palette from Global Constraints and the three font variables. In `layout.tsx` swap the current `Cormorant_Garamond` and `Manrope` for `Fraunces` (opsz variable, weights 300 to 700, with italic, `subsets: ["latin", "cyrillic"]`), `Archivo` and `IBM_Plex_Mono`, keeping the existing CSS-variable contract `--font-display` and `--font-sans` and adding `--font-mono`.
+In `globals.css` extend `@theme` with the palette from Global Constraints and the three font variables. In `layout.tsx` replace `Cormorant_Garamond` with `Literata` and add `IBM_Plex_Mono`, keeping `Manrope` as the interface face, and keep the CSS-variable contract `--font-display` and `--font-sans` while adding `--font-mono`. Every family must declare `subsets: ["latin", "cyrillic"]`. Fraunces and Archivo were the first pick and are ruled out on evidence, not taste: `next/font` lists their subsets as `latin, latin-ext, vietnamese`, so requesting cyrillic fails the build's typecheck, and dropping the request would have rendered every Russian headline in the Georgia fallback.
 
 - [ ] **Step 4: Implement the primitives**
 

@@ -41,41 +41,60 @@ export function recommend(
   opts: { exclude?: string[]; limit?: number } = {},
 ): Suggestion[] {
   const limit = opts.limit ?? 3;
-  const excluded = new Set(opts.exclude ?? []);
   const agreed = head.shapeAgreed ?? 3;
   const sizeOnly = head.shapeHint === "unknown" || agreed < 3;
-  const band = confidenceBand(agreed).pct;
-  const target = targetFrontWidthMm(head);
+  const ranked = rankCandidates(head, frames, new Set(opts.exclude ?? []), sizeOnly);
+  return pickDistinct(ranked, limit, head, confidenceBand(agreed).pct, sizeOnly);
+}
 
-  const ranked = frames
+type Candidate = { frame: Frame; delta: number };
+
+function rankCandidates(
+  head: FitHead,
+  frames: Frame[],
+  excluded: Set<string>,
+  sizeOnly: boolean,
+): Candidate[] {
+  return frames
     .filter((f) => !excluded.has(f.sku))
     .map((f) => ({ frame: f, delta: fitDeltaMm(head, f) }))
     .filter((c) => fitsWidth(c.delta))
     .sort((a, b) => score(b, head, sizeOnly) - score(a, head, sizeOnly)
       || Math.abs(a.delta) - Math.abs(b.delta)
       || cmpSku(a.frame.sku, b.frame.sku));
+}
 
-  const picked: Suggestion[] = [];
-  const usedShapes = new Set<string>();
+/** ТЗ FR-M05 asks for different shapes when the catalogue can offer them. When
+ *  it cannot, the next best frames backfill rather than the list going short. */
+function pickDistinct(
+  ranked: Candidate[],
+  limit: number,
+  head: FitHead,
+  band: number,
+  sizeOnly: boolean,
+): Suggestion[] {
+  const target = targetFrontWidthMm(head);
+  const make = (c: Candidate) => toSuggestion(c.frame, c.delta, head, band, sizeOnly, target);
+  const seen = new Set<string>();
+  const out: Suggestion[] = [];
   for (const c of ranked) {
-    if (usedShapes.has(c.frame.shape)) continue;
-    usedShapes.add(c.frame.shape);
-    picked.push(toSuggestion(c.frame, c.delta, head, band, sizeOnly, target));
-    if (picked.length === limit) return picked;
+    if (seen.has(c.frame.shape)) continue;
+    seen.add(c.frame.shape);
+    out.push(make(c));
+    if (out.length === limit) return out;
   }
   for (const c of ranked) {
-    if (picked.some((s) => s.frame.sku === c.frame.sku)) continue;
-    picked.push(toSuggestion(c.frame, c.delta, head, band, sizeOnly, target));
-    if (picked.length === limit) break;
+    if (out.length === limit) break;
+    if (!out.some((s) => s.frame.sku === c.frame.sku)) out.push(make(c));
   }
-  return picked;
+  return out;
 }
 
 function cmpSku(a: string, b: string): number {
   return a < b ? -1 : a > b ? 1 : 0;
 }
 
-function score(c: { frame: Frame; delta: number }, head: FitHead, sizeOnly: boolean): number {
+function score(c: Candidate, head: FitHead, sizeOnly: boolean): number {
   const width = 100 - Math.abs(c.delta) * 8;
   if (sizeOnly) {
     return width;

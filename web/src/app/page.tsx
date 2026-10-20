@@ -11,8 +11,8 @@ export default function HomePage() {
             <p className="mb-6 text-xs font-medium tracking-[0.22em] text-mute uppercase">
               Ателье посадки · живая камера
             </p>
-            <h1 className="font-display max-w-[14ch] text-[clamp(3.2rem,8vw,7.2rem)] leading-[0.9] tracking-[-0.04em]">
-              Мы подберем Вам Вашу оправу
+            <h1 className="font-display max-w-[16ch] text-[clamp(3.2rem,8vw,7.2rem)] leading-[0.9] tracking-[-0.04em]">
+              Найдём оправу под вашу посадку
             </h1>
             <p className="mt-8 max-w-md text-lg leading-relaxed text-mute">
               Сфотографируйтесь сейчас Считаем межзрачковое расстояние и ширину лица в 3D,
@@ -21,7 +21,7 @@ export default function HomePage() {
             <div className="mt-10 flex flex-wrap items-center gap-4">
               <Link
                 href="/capture"
-                className="inline-flex min-h-12 items-center rounded-full bg-blood px-7 text-sm font-medium text-blood-fg"
+                className="inline-flex min-h-12 items-center rounded-full bg-vermilion px-7 text-sm font-medium text-vermilion-fg"
               >
                 Открыть камеру
               </Link>
@@ -31,7 +31,7 @@ export default function HomePage() {
             </div>
           </div>
           <aside className="relative overflow-hidden rounded-[2rem] bg-night p-8 text-paper">
-            <p className="text-xs tracking-[0.2em] uppercase text-gold">Без подставок</p>
+            <p className="text-xs tracking-[0.2em] uppercase text-brass">Без подставок</p>
             <ul className="mt-8 space-y-5 text-sm leading-relaxed text-paper/80">
               <li>Лицо — только с вашей камеры</li>
               <li>Оправы — заводские коды размеров (eye / bridge / temple)</li>

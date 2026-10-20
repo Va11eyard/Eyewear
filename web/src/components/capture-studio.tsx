@@ -303,7 +303,7 @@ function CaptureShell({
           type="button"
           onClick={onCapture}
           disabled={measureDisabled}
-          className="min-h-12 rounded-full bg-blood px-6 text-sm font-medium text-blood-fg disabled:opacity-50"
+          className="min-h-12 rounded-full bg-vermilion px-6 text-sm font-medium text-vermilion-fg disabled:opacity-50"
         >
           Снять мерки и подобрать оправы
         </button>
