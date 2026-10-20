@@ -32,15 +32,15 @@ export function buildGlassesRig(frame: RigFrame): THREE.Group {
   const group = new THREE.Group();
   addEye(group, -cx, w, h, rimW, depth, frame.shape, rim, glass, true);
   addEye(group, cx, w, h, rimW, depth, frame.shape, rim, glass, false);
-  addBridge(group, frame.bridgeMm, h, depth, metal, rim);
+  addBridge(group, frame.bridgeMm, h, rimW, depth, metal, rim);
   if (frame.shape === "browline") {
     addBrowBar(group, cx, w, h, rimW, depth, frame, rim);
   }
   if (metal) {
     addPads(group, cx, w, h, hardware);
   }
-  addTemple(group, -cx - w / 2 - rimW * 0.2, -1, frame.templeMm, metal, rim, hardware);
-  addTemple(group, cx + w / 2 + rimW * 0.2, 1, frame.templeMm, metal, rim, hardware);
+  addTemple(group, -cx - w / 2 - rimW * 0.2, -1, h, frame.templeMm, metal, rim, hardware);
+  addTemple(group, cx + w / 2 + rimW * 0.2, 1, h, frame.templeMm, metal, rim, hardware);
   wrapFront(group, metal ? 260 : 220);
   group.rotation.x = 0.06;
   return group;
@@ -95,6 +95,7 @@ function addBridge(
   group: THREE.Group,
   gap: number,
   h: number,
+  rimW: number,
   depth: number,
   metal: boolean,
   rim: THREE.Material,
@@ -108,8 +109,12 @@ function addBridge(
     group.add(mesh);
     return;
   }
-  const mesh = new THREE.Mesh(new THREE.BoxGeometry(Math.max(gap - 1, 6), depth * 0.55, depth * 0.85), rim);
-  mesh.position.set(0, h * 0.18, -0.4);
+  // An acetate bridge is a solid saddle that carries the rim's own thickness,
+  // not a strut. A thin box here reads instantly as a synthetic model.
+  const wB = gap + rimW * 1.2;
+  const hB = h * 0.3;
+  const mesh = new THREE.Mesh(extrude(lensProfile("rect", wB, hB, true), depth), rim);
+  mesh.position.set(0, h / 2 + rimW * 0.85 - hB / 2, -depth * 0.35);
   mesh.userData.front = true;
   group.add(mesh);
 }
@@ -136,24 +141,50 @@ function addTemple(
   group: THREE.Group,
   x: number,
   dir: number,
+  h: number,
   length: number,
   metal: boolean,
   rim: THREE.Material,
   hardware: THREE.Material,
 ) {
   const len = Math.min(length, 150);
-  const radius = metal ? 1.05 : 2.15;
+  // A real temple runs back roughly level with the rim and only drops in the
+  // last quarter, where it hooks over the ear. Rising along the way reads as
+  // antennae, which is the fastest tell that a frame is synthetic.
   const path = new THREE.CatmullRomCurve3([
-    new THREE.Vector3(x, 1.2, 1),
-    new THREE.Vector3(x + dir * 3, 3.5, -len * 0.28),
-    new THREE.Vector3(x + dir * 4, 9, -len * 0.58),
-    new THREE.Vector3(x + dir * 1.5, 18, -len * 0.88),
+    new THREE.Vector3(x, h * 0.26, 0.6),
+    new THREE.Vector3(x + dir * 1.2, h * 0.2, -len * 0.3),
+    new THREE.Vector3(x + dir * 2.4, h * 0.1, -len * 0.62),
+    new THREE.Vector3(x + dir * 3.6, -h * 0.08, -len * 0.86),
+    new THREE.Vector3(x + dir * 4.2, -h * 0.42, -len * 0.98),
   ]);
-  const temple = new THREE.Mesh(new THREE.TubeGeometry(path, 24, radius, 10, false), rim);
+  const temple = new THREE.Mesh(metal ? wireTemple(path) : flatTemple(path), rim);
   const hinge = new THREE.Mesh(new THREE.CylinderGeometry(1.6, 1.6, metal ? 4.2 : 6.2, 12), hardware);
   hinge.rotation.x = Math.PI / 2;
-  hinge.position.set(x, 1.4, 0.6);
+  hinge.position.set(x, h * 0.26, 0.4);
   group.add(temple, hinge);
+}
+
+/** Acetate temples are a flat band about 4 by 2 mm, not a rod. */
+function flatTemple(path: THREE.Curve<THREE.Vector3>): THREE.ExtrudeGeometry {
+  const w = 3.9;
+  const t = 1.9;
+  const r = 0.75;
+  const s = new THREE.Shape();
+  s.moveTo(-w / 2 + r, -t / 2);
+  s.lineTo(w / 2 - r, -t / 2);
+  s.quadraticCurveTo(w / 2, -t / 2, w / 2, -t / 2 + r);
+  s.lineTo(w / 2, t / 2 - r);
+  s.quadraticCurveTo(w / 2, t / 2, w / 2 - r, t / 2);
+  s.lineTo(-w / 2 + r, t / 2);
+  s.quadraticCurveTo(-w / 2, t / 2, -w / 2, t / 2 - r);
+  s.lineTo(-w / 2, -t / 2 + r);
+  s.quadraticCurveTo(-w / 2, -t / 2, -w / 2 + r, -t / 2);
+  return new THREE.ExtrudeGeometry(s, { extrudePath: path, steps: 64, bevelEnabled: false });
+}
+
+function wireTemple(path: THREE.Curve<THREE.Vector3>): THREE.TubeGeometry {
+  return new THREE.TubeGeometry(path as THREE.CatmullRomCurve3, 48, 1.05, 10, false);
 }
 
 function wrapFront(group: THREE.Group, radius: number) {
@@ -193,33 +224,27 @@ function rimMaterial(frame: RigFrame): THREE.MeshPhysicalMaterial {
   return new THREE.MeshPhysicalMaterial({
     color: map ? 0xffffff : rimColor(frame.color),
     map,
-    metalness: metal ? 0.96 : 0.04,
-    roughness: metal ? 0.12 : 0.28,
+    metalness: metal ? 0.98 : 0.04,
+    roughness: metal ? 0.17 : 0.28,
     clearcoat: metal ? 0.55 : 1,
     clearcoatRoughness: metal ? 0.12 : 0.18,
     sheen: metal ? 0 : 0.55,
     sheenRoughness: 0.4,
     sheenColor: new THREE.Color(rimColor(frame.color)),
-    envMapIntensity: metal ? 1.6 : 0.85,
+    envMapIntensity: metal ? 2.0 : 0.9,
   });
 }
 
 function glassMaterial(): THREE.MeshPhysicalMaterial {
   return new THREE.MeshPhysicalMaterial({
-    color: 0xd7eaf5,
+    color: 0xffffff,
     metalness: 0,
     roughness: 0.02,
-    transmission: 0.96,
-    thickness: 1.8,
-    ior: 1.52,
     transparent: true,
-    opacity: 1,
-    envMapIntensity: 1.8,
+    opacity: 0.14,
+    ior: 1.52,
+    envMapIntensity: 2.6,
     specularIntensity: 1,
-    iridescence: 0.12,
-    iridescenceIOR: 1.3,
-    attenuationColor: new THREE.Color(0x9ec4de),
-    attenuationDistance: 8,
     side: THREE.DoubleSide,
   });
 }
@@ -246,23 +271,23 @@ function acetateMap(color: string): THREE.CanvasTexture | null {
   }
   ctx.fillStyle = color === "horn" ? "#3a2a1c" : "#5c3318";
   ctx.fillRect(0, 0, 256, 256);
-  for (let i = 0; i < 48; i += 1) {
-    ctx.fillStyle = i % 2 === 0 ? "rgba(28,16,8,0.55)" : "rgba(196,132,48,0.4)";
+  for (let i = 0; i < 26; i += 1) {
+    ctx.fillStyle = i % 2 === 0 ? "rgba(22,12,5,0.72)" : "rgba(214,150,62,0.55)";
     ctx.beginPath();
-    ctx.ellipse(Math.random() * 256, Math.random() * 256, 8 + Math.random() * 28, 4 + Math.random() * 16, Math.random(), 0, Math.PI * 2);
+    ctx.ellipse(Math.random() * 256, Math.random() * 256, 18 + Math.random() * 46, 7 + Math.random() * 24, Math.random(), 0, Math.PI * 2);
     ctx.fill();
   }
   const tex = new THREE.CanvasTexture(canvas);
   tex.colorSpace = THREE.SRGBColorSpace;
   tex.wrapS = THREE.RepeatWrapping;
   tex.wrapT = THREE.RepeatWrapping;
-  tex.repeat.set(2.4, 2.4);
+  tex.repeat.set(1.15, 1.15);
   return tex;
 }
 
 const RIM_COLORS: Record<string, number> = {
   black: 0x161310,
-  gold: 0xc9a66b,
+  gold: 0xe3b56b,
   silver: 0xd0cbc3,
   gunmetal: 0x4a5058,
   tortoise: 0x7a4a28,

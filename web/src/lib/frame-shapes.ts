@@ -9,8 +9,8 @@ export type Profile = [number, number][];
 
 export const PROFILES: Record<string, Profile> = {
   panto: [
-    [0.0, 0.5], [0.34, 0.44], [0.5, 0.22], [0.46, -0.06], [0.3, -0.34],
-    [0.0, -0.5], [-0.3, -0.34], [-0.46, -0.06], [-0.5, 0.22], [-0.34, 0.44],
+    [0.0, 0.44], [0.26, 0.46], [0.44, 0.4], [0.5, 0.22], [0.46, -0.06], [0.36, -0.28],
+    [0.16, -0.46], [-0.16, -0.46], [-0.36, -0.28], [-0.46, -0.06], [-0.5, 0.22], [-0.44, 0.4], [-0.26, 0.46],
   ],
   aviator: [
     [0.0, 0.46], [0.4, 0.5], [0.5, 0.28], [0.4, -0.1], [0.12, -0.44],
@@ -55,22 +55,26 @@ export function eyeCenterX(lensWidthMm: number, bridgeMm: number): number {
   return lensWidthMm / 2 + bridgeMm / 2;
 }
 
+/**
+ * Control points are resampled through a closed catmull-rom spline, because a
+ * ten point polygon extruded as-is gives visible facets on every curve and is
+ * the fastest way to make a frame look synthetic.
+ */
 function smooth(pts: Profile, hole: boolean): THREE.Shape {
-  const ring = hole ? [...pts].reverse() : pts;
-  const n = ring.length;
-  const at = (i: number) => ring[((i % n) + n) % n];
-  const mid = (i: number): [number, number] => [
-    (at(i)[0] + at(i + 1)[0]) / 2,
-    (at(i)[1] + at(i + 1)[1]) / 2,
-  ];
+  const curve = new THREE.CatmullRomCurve3(
+    pts.map(([x, y]) => new THREE.Vector3(x, y, 0)),
+    true,
+    "centripetal",
+    0.5,
+  );
+  const sampled = curve.getPoints(160).map((v) => ({ x: v.x, y: v.y }));
+  const ring = hole ? sampled.reverse() : sampled;
   const s = new THREE.Shape();
-  const start = mid(0);
-  s.moveTo(start[0], start[1]);
-  for (let i = 1; i <= n; i += 1) {
-    const a = mid(i);
-    const b = mid(i + 1);
-    s.quadraticCurveTo(a[0], a[1], b[0], b[1]);
+  s.moveTo(ring[0].x, ring[0].y);
+  for (let i = 1; i < ring.length; i += 1) {
+    s.lineTo(ring[i].x, ring[i].y);
   }
+  s.closePath();
   return s;
 }
 
