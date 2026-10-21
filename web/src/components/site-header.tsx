@@ -15,6 +15,11 @@ export function SiteHeader() {
               </Link>
             </li>
             <li>
+              <Link href="/catalog" className="hover:text-oxblood">
+                Каталог
+              </Link>
+            </li>
+            <li>
               <Link href="/how" className="hover:text-oxblood">
                 Метод
               </Link>
