@@ -78,13 +78,12 @@ function addBrowBar(
   frame: RigFrame,
   rim: THREE.Material,
 ) {
+  const barH = h * 0.3;
   const bar = new THREE.Mesh(
-    extrude(rimProfile(frame.shape, w, h, rimW, true), depth * 1.5),
+    extrude(lensProfile("rect", w + rimW * 2, barH, true), depth * 1.35),
     rim,
   );
-  bar.position.set(-cx, 0, -depth * 0.5);
-  bar.scale.y = 0.42;
-  bar.position.y = h * 0.36;
+  bar.position.set(-cx, h / 2 + rimW * 0.45 - barH / 2, -depth * 0.45);
   bar.userData.front = true;
   const mirror = bar.clone();
   mirror.position.x = cx;
@@ -112,9 +111,9 @@ function addBridge(
   // An acetate bridge is a solid saddle that carries the rim's own thickness,
   // not a strut. A thin box here reads instantly as a synthetic model.
   const wB = gap + rimW * 1.2;
-  const hB = h * 0.3;
+  const hB = h * 0.26;
   const mesh = new THREE.Mesh(extrude(lensProfile("rect", wB, hB, true), depth), rim);
-  mesh.position.set(0, h / 2 + rimW * 0.85 - hB / 2, -depth * 0.35);
+  mesh.position.set(0, h / 2 + rimW * 0.3 - hB / 2, -depth * 0.35);
   mesh.userData.front = true;
   group.add(mesh);
 }
